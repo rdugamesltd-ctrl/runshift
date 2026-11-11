@@ -1,0 +1,38 @@
+# Dependencies
+node_modules/
+
+# Build output
+dist/
+*.tsbuildinfo
+.vite/
+
+# Secrets: never commit API keys (TRIPO_API_KEY, POLYPIZZA_TOKEN)
+.env
+.env.*
+!.env.example
+
+# Tool output: smoke/device screenshots and run artefacts (tools/*.mjs)
+artifacts/
+
+# Manual asset downloads (zips the user fetches by hand, see asset-sources/README.md).
+# Git worktrees do not contain these: tools read them from the main checkout.
+asset-sources/quaternius/
+asset-sources/kenney/
+asset-sources/kaykit/
+
+# Agent tooling state
+.claude-flow/
+.claude/worktrees/
+.claude/settings.local.json
+
+# Logs
+*.log
+npm-debug.log*
+
+# Editor / OS
+.vscode/*
+!.vscode/extensions.json
+.idea/
+.DS_Store
+Thumbs.db
+desktop.ini

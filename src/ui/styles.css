@@ -1,0 +1,39 @@
+/*
+ * RUNSHIFT UI. WP-00 stub: the bundled fonts and the palette only. The touch rules and the boot screen live in
+ * index.html. TODO WP-05: the full look (docs/UI-DESIGN.md): Rail's anti-AI-look rules, two surfaces .sign and
+ * .plate, transform/opacity animation only, safe-area insets, screens, HUD, toasts.
+ */
+
+@font-face {
+  font-family: 'Fredoka';
+  src: url('./fonts/fredoka-latin.woff2') format('woff2');
+  font-weight: 300 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Lilita One';
+  src: url('./fonts/lilita-one-latin.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+:root {
+  --font: 'Fredoka', 'Trebuchet MS', 'Segoe UI', system-ui, sans-serif;
+  --display: 'Lilita One', 'Fredoka', 'Trebuchet MS', system-ui, sans-serif;
+
+  /* The palette (src/render/toon/palette.ts). No purple. */
+  --ink: #1c2340;
+  --cream: #fff4dd;
+  --teal: #17b3a3;
+  --orange: #ff7a1f;
+  --gold: #ffbf2a;
+  --red: #e8402e;
+}
+
+#hud {
+  font-family: var(--font);
+  color: var(--cream);
+}
