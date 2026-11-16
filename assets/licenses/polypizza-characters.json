@@ -1,0 +1,27 @@
+{
+  "checked": "2026-11-12",
+  "models": [
+    {
+      "role": "hero",
+      "title": "Animated Platformer Character",
+      "creator": "Quaternius",
+      "source": "https://poly.pizza/m/kKtL4zvS3n",
+      "licenceShown": "Public Domain (CC0)",
+      "sourceFile": "Animated Platformer Character by Quaternius - kKtL4zvS3n.glb",
+      "sha256": "140d72d10993ebe83815170fc0a061a9190b499e41b63ded0e10c8c4ec876108",
+      "animations": 18,
+      "bytes": 453384
+    },
+    {
+      "role": "thief",
+      "title": "Ninja",
+      "creator": "Quaternius",
+      "source": "https://poly.pizza/m/xGYmeDpfTu",
+      "licenceShown": "Public Domain (CC0)",
+      "sourceFile": "Ninja by Quaternius - xGYmeDpfTu.glb",
+      "sha256": "f9d38ed5156252a675b40a16c8a01795c16b78b464edbde1ab9fc46951ae420e",
+      "animations": 14,
+      "bytes": 457204
+    }
+  ]
+}

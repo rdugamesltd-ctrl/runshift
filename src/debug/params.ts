@@ -35,6 +35,7 @@ export function parseParams(search: string): UrlParams {
     tutorial: params.has('tutorial'),
     powerups: params.get('powerups') === 'all' ? 'all' : null,
     nosw: params.has('nosw'),
+    chase: params.has('chase'),
   };
 }
 

@@ -1,6 +1,6 @@
 import { defineConfig } from 'vitest/config';
 
-/** Runs only the pattern report (npm run patterns). See src/dev/patterns.report.test.ts. WP-00 placeholder; WP-12 owns it. */
+/** Runs only the pattern report (npm run patterns). See src/dev/patterns.report.test.ts. */
 export default defineConfig({
   define: { __PLATFORM__: JSON.stringify('local') },
   test: {

@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { CAMERA, CHUNK, FOG, JUMP, LANES, QUALITY, SPEED, THIEF, TIERS, UPGRADES, WALL } from './balance';
+import obstacles from './game/track/obstacles.json';
 import { hashString, makeRng, mixSeed } from './game/track/random';
 import { distanceAt, speedAt, timeForDistance } from './game/track/speed';
 
@@ -9,10 +10,10 @@ function take(rng: () => number, n: number): number[] {
 }
 
 describe('balance invariants', () => {
-  it('the jump has g = 8·apex/airtime² = 30 m/s² and a 9 m/s take-off', () => {
+  it('an ordinary jump stays below a metro train roof', () => {
     const g = (8 * JUMP.apex) / JUMP.airtime ** 2;
-    expect(Math.abs(g - 30)).toBeLessThanOrEqual(0.5);
-    expect((4 * JUMP.apex) / JUMP.airtime).toBeCloseTo(9, 9);
+    expect(g).toBeGreaterThan(0);
+    expect(JUMP.apex).toBeLessThan(obstacles.metroCar.y1);
   });
 
   it('the wall band boxes are valid, disjoint, and hold their band heights', () => {

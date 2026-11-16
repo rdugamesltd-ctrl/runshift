@@ -105,6 +105,16 @@ export function createTestTrack(spec: TestTrackSpec = {}): TrackQuery {
 
   return {
     floorAt,
+    platformAt(d, x) {
+      let top: number | null = null;
+      for (const box of boxes) {
+        if (box.kind !== 'metroCar' || box.broken || d < box.d0 || d >= box.d1 || x < box.x0 || x >= box.x1) continue;
+        const rise = box.rampLength && d < box.d0 + box.rampLength
+          ? box.y0 + (box.y1 - box.y0) * (d - box.d0) / box.rampLength : box.y1;
+        if (top === null || rise > top) top = rise;
+      }
+      return top;
+    },
     runnableWall,
     resolveWallJump(d: number, from: Side, v: number): WallJumpTarget {
       const land = d + v * WALL.speedFactor * WALL.jumpTime;
@@ -116,7 +126,13 @@ export function createTestTrack(spec: TestTrackSpec = {}): TrackQuery {
       if (floorAt(land) !== null) return { kind: 'floor', lane: 0, d: land };
       return { kind: 'none', d: land };
     },
-    boxesIn: (d0, d1, out) => collect(boxes, (b) => b.d0, (b) => b.d1, d0, d1, out),
+    boxesIn(d0, d1, out) {
+      let n = 0;
+      for (const box of boxes) if (box.d0 <= d1 && box.d1 >= d0) out[n++] = box;
+      out.length = n;
+      out.sort((a, b) => a.d0 - b.d0);
+      return n;
+    },
     coinsIn: (d0, d1, out) => collect(coins, (c) => c.d, (c) => c.d, d0, d1, out),
     pickupsIn: (d0, d1, out) => collect(pickups, (p) => p.d, (p) => p.d, d0, d1, out),
     pathAt(d: number, out: PathKey): PathKey {

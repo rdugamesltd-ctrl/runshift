@@ -1,0 +1,27 @@
+{
+  "checked": "2026-11-12",
+  "models": [
+    {
+      "kind": "street-tree",
+      "id": "ORCbG8dslS",
+      "title": "Tree Large",
+      "creator": "Kenney",
+      "page": "https://poly.pizza/m/ORCbG8dslS",
+      "download": "https://static.poly.pizza/76766a23-4768-458f-8010-0fb75d1e1325.glb",
+      "licence": "CC0 1.0",
+      "sha256": "c989a6c8a6d728300dcbd2636b37399e8ebc2a2b146d8816fb8fb27eb99c1c0b",
+      "bytes": 15120
+    },
+    {
+      "kind": "street-lamp",
+      "id": "nFwrlcLvM5",
+      "title": "Street Light",
+      "creator": "Quaternius",
+      "page": "https://poly.pizza/m/nFwrlcLvM5",
+      "download": "https://static.poly.pizza/9a8aac3e-d1ee-4860-b294-edca62ef50be.glb",
+      "licence": "CC0 1.0",
+      "sha256": "812b82718233f91850490805b67afd6166a17ed802907521ccc8a2280839f275",
+      "bytes": 11056
+    }
+  ]
+}

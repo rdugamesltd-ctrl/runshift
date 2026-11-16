@@ -1,0 +1,9 @@
+{
+  "blocker": { "depth": 1.2, "width": 1.2, "y0": 0, "y1": 2.2, "rule": "dodge" },
+  "barrierLow": { "depth": 0.8, "width": 1.2, "y0": 0, "y1": 0.8, "rule": "jump" },
+  "barrierHigh": { "depth": 0.8, "width": 1.2, "y0": 0.9, "y1": 1.9, "rule": "slide" },
+  "metroCar": { "depth": 1, "width": 1.8, "y0": 0, "y1": 2.25, "rule": "dodge" },
+  "wallSignHigh": { "depth": 1.2, "width": 1.6, "y0": 1.5, "y1": 3, "rule": "bandHigh" },
+  "wallVentLow": { "depth": 1.2, "width": 1.6, "y0": 0.2, "y1": 1.45, "rule": "bandLow" },
+  "wallPipeFull": { "depth": 1.2, "width": 1.6, "y0": 0, "y1": 3.4, "rule": "wallJump" }
+}

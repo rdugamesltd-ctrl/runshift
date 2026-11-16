@@ -3,9 +3,12 @@
 RUNSHIFT: a browser endless runner built with Three.js r187, TypeScript 7 and Vite 8, for phones (touch, portrait and
 landscape) and desktops (keyboard). An original speedster hero chases a masked thief who stole gold down three
 lanes (Subway Surfers style: swipe to change lane, jump and slide), and runs on the side walls where the floor is
-missing. There is no backend; progress is saved in `localStorage`.
+missing. A run is seen in first person: the hero's own arms and legs are drawn over the world
+(`src/render/characters/firstPersonBody.ts`), and `?chase` brings back the third-person chase camera. There is no
+backend; progress is saved in `localStorage`.
 
-This is the WP-00 skeleton. Integrators keep it current; WP-55 writes the final version. The project is built in
+M0 and M1 (wall-running) are verified; M2 art is in progress, with a rail-yard track, liveried trains and working power-ups (magnet, ×2, shield, jet glide). Integrators keep this file current;
+WP-55 writes the final version. The project is built in
 work packages (WP-xx): ownership, style and the normative rules are in `docs/CONVENTIONS.md`, progress in
 `docs/STATUS.md`.
 
@@ -13,18 +16,17 @@ work packages (WP-xx): ownership, style and the normative rules are in `docs/CON
 
 On Windows, PowerShell may block `npm.ps1`. If it does, use `npm.cmd` (and `npx.cmd`).
 
-- `npm run dev` starts the Vite dev server (port 5173 by default). Today it shows the boot screen, then the grey-box
-  run. URL parameters for testing (`?debug`, `?bot=`, `?seed=`, `?d=` and more) are listed in `src/debug/hooks.ts`.
+- `npm run dev` starts the Vite dev server (port 5173 by default). It shows the boot screen, then the menu and
+  grey-box run. URL parameters for testing (`?debug`, `?bot=`, `?seed=`, `?d=` and more) are listed in `src/debug/hooks.ts`.
 - `npm run typecheck` (`tsc --noEmit`) is the fast correctness check.
 - `npm test` runs the vitest unit tests (`src/**/*.test.ts`, Node environment, everything but `src/dev`).
 - `npm run build` type-checks, builds `dist/` with relative paths, then runs `tools/postbuild.mjs`. The warning about a
   chunk over 500 kB is expected (three.js). `npm run build:poki` and `npm run build:crazygames` build the portal
   versions (`--mode`, which sets `__PLATFORM__`). `npm run preview` serves `dist/`.
 - `npm run patterns` and `npm run stress` run the long reports in `src/dev/` through their own vitest configs.
-- `npm run smoke`, `devices`, `loadtime`, `budget`, `profile` are the browser and budget checks (headless Chrome via
-  puppeteer-core); `npm run assets:fetch`, `assets:world`, `assets:chars`, `assets:credits`, `assets:all`, `inspect`,
-  `icons`, `tripo:rig`, `tripo:retarget` build assets. Until its owner replaces it, each of these is a placeholder that
-  exits with code 1 and names the owning package (see `docs/STATUS.md`).
+- `npm run smoke` checks menu, input, pause, results, bot survival and save persistence in headless Chrome;
+  `npm run devices` checks menu and HUD geometry at desktop and phone sizes. `loadtime`, `budget`, `profile`,
+  `assets:*`, `inspect`, `icons` and `tripo:*` are still placeholders owned by later packages (see `docs/STATUS.md`).
 - Check a change in the browser with headless Chrome (`C:\Program Files\Google\Chrome\Application\chrome.exe`, flags
   `--use-angle=swiftshader --enable-unsafe-swiftshader`) and `window.__runshift` (with `?debug` or `?bot`).
   Screenshots go to `artifacts/`, which is gitignored.
@@ -47,7 +49,7 @@ never rebased; something at distance s renders at z = −(s − dRender).
 | `src/game/types.ts` | The simulation contract: track, chunk, player, thief, run state, events, save. Frozen, additive changes only. |
 | `src/game/track/` | Track generation and queries: `speed.ts` (speed curve), `streamer.ts` (40 m chunks), `testTrack.ts` (reference `TrackQuery`), `random.ts` (seeded rng), patterns, director, validator, walls, districts. |
 | `src/game/entities/` | Player state machine, action buffer, collisions, the thief. |
-| `src/game/systems/` | `Run` (one run, fixed steps), `Session` (screens), save and progress, scoring, bots, power-ups, tutorial. |
+| `src/game/systems/` | `Run` (one run, fixed steps), `Session` (screens), save and progress, scoring, bots, power-ups, the first-run tutorial (`tutorial.ts`; its lesson track is `track/tutorialTrack.ts`). |
 | `src/render/types.ts` | The render contract: kit model names, assets, `View`, `ViewContext`. |
 | `src/render/` | Stage, chase camera and aspect fit, quality, instancing (`InstanceBatch`), toon materials, asset loading, character rigs, world views (grey box first), VFX. |
 | `src/input/` | Contract (`types.ts`), swipe detector, keyboard map, the input port, the audio unlock. |
@@ -83,6 +85,8 @@ never rebased; something at distance s renders at z = −(s − dRender).
   characters (`public/assets/characters/{hero,thief}.glb`, WP-24) are baked from `asset-sources/` (WP-21), which is
   never shipped. Every third-party asset needs a row in `assets/CREDITS.md`; CC-BY assets also need the in-game
   credits screen.
+- Music: `public/assets/music/` (`main-menu.mp3` on the menu and results, `highway-jumpers.mp3` during a run), streamed
+  by `GameAudio.setMusic` (`src/audio/audio.ts`); file names and levels are in `src/audio/sfx.ts`.
 - The user generates the hero, the thief and a few props in Tripo (paid plan): `docs/TRIPO-ASSETS.md`.
 
 ## Docs

@@ -108,6 +108,8 @@ export interface UrlParams {
   powerups: 'all' | null;
   /** ?nosw: no service worker. */
   nosw: boolean;
+  /** ?chase: the third-person chase camera instead of the first-person view during a run. */
+  chase: boolean;
 }
 
 /** performance.mark names: script start, assets loaded, menu shown, first run frame. */

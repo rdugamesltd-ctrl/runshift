@@ -19,6 +19,7 @@ artifacts/
 asset-sources/quaternius/
 asset-sources/kenney/
 asset-sources/kaykit/
+asset-sources/polypizza/
 
 # Agent tooling state
 .claude-flow/

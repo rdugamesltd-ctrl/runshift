@@ -1,0 +1,822 @@
+{
+  "about": "WP-21: every third-party asset RUNSHIFT plans to use, with the KitModel (src/render/types.ts) or role it fills. Read by tools/assets/fetch-polypizza.mjs (downloads the poly.pizza models) and snapshot.mjs (licence evidence), then by WP-22 (build-world), WP-24 (build-characters) and WP-52 (credits). Title, creator and licence were read from the live pages on the date in `checked`; fetch-polypizza.mjs warns when the API or a page says otherwise. `alsoFor` lists further KitModels the same source can fill. Licences and attribution lines live in assets/CREDITS.md; the manual downloads are listed in asset-sources/README.md.",
+  "checked": "2026-11-12",
+  "priorities": {
+    "P0": "needed for M2: a source for every KitModel in the world kit (WP-22 check-kit) and the placeholder characters (WP-24)",
+    "P1": "a fallback or alternative for a P0 slot, or needed from M3 on (subway district, Blender step)",
+    "P2": "optional extras"
+  },
+  "assets": [
+    {
+      "role": "character:hero",
+      "source": "polypizza",
+      "id": "kKtL4zvS3n",
+      "url": "https://poly.pizza/m/kKtL4zvS3n",
+      "title": "Animated Platformer Character",
+      "creator": "Quaternius",
+      "licence": "CC0 1.0",
+      "priority": "P0",
+      "notes": "Hero placeholder until the Tripo hero arrives (docs/TRIPO-ASSETS.md). Rigged and animated, 2348 tris; WP-24 maps its clips to ClipName."
+    },
+    {
+      "role": "character:thief",
+      "source": "polypizza",
+      "id": "xGYmeDpfTu",
+      "url": "https://poly.pizza/m/xGYmeDpfTu",
+      "title": "Ninja",
+      "creator": "Quaternius",
+      "licence": "CC0 1.0",
+      "priority": "P0",
+      "notes": "Thief placeholder until the Tripo thief arrives. Rigged and animated, 5780 tris. Holds a katana in the preview: WP-24 hides it if it is a separate node and puts the gold sack in the hand."
+    },
+    {
+      "kitModel": "gold-sack",
+      "source": "polypizza",
+      "id": "vFFblhnHtb",
+      "url": "https://poly.pizza/m/vFFblhnHtb",
+      "title": "Gold Bag",
+      "creator": "Quaternius",
+      "licence": "CC0 1.0",
+      "priority": "P0",
+      "notes": "Brown sack with gold coins on top. 3954 tris, heavy for a prop: simplify hard. Also parented to the thief's hand (WP-24). The Tripo gold-sack replaces it later."
+    },
+    {
+      "kitModel": "coin",
+      "source": "polypizza",
+      "id": "QHZtj94fvh",
+      "url": "https://poly.pizza/m/QHZtj94fvh",
+      "title": "Coin",
+      "creator": "Quaternius",
+      "licence": "CC0 1.0",
+      "priority": "P0",
+      "notes": "Gold coin with an embossed star, 206 tris. Drawn up to 256 times per frame: keep it small after simplification."
+    },
+    {
+      "kitModel": "pickup-multiplier",
+      "source": "polypizza",
+      "id": "fUfTnyvYdl",
+      "url": "https://poly.pizza/m/fUfTnyvYdl",
+      "title": "Pickup Thunder",
+      "creator": "Quaternius",
+      "licence": "CC0 1.0",
+      "priority": "P0",
+      "notes": "Yellow lightning bolt inside a ring, 228 tris. The Tripo pickup-multiplier may replace it."
+    },
+    {
+      "kitModel": "pickup-magnet",
+      "source": "polypizza",
+      "id": "dD2RIIea6WR",
+      "url": "https://poly.pizza/m/dD2RIIea6WR",
+      "title": "Magnet",
+      "creator": "Poly by Google",
+      "licence": "CC-BY 3.0",
+      "priority": "P0",
+      "notes": "Red horseshoe magnet with silver tips, 776 tris. CC-BY: needs the in-game credits screen while it ships; the Tripo pickup-magnet replaces it and removes the credit."
+    },
+    {
+      "kitModel": "glide-board",
+      "alsoFor": ["pickup-glide"],
+      "source": "polypizza",
+      "id": "iJ8ZSLvSUl",
+      "url": "https://poly.pizza/m/iJ8ZSLvSUl",
+      "title": "Hoverboard",
+      "creator": "SamPokemon",
+      "licence": "CC-BY 3.0",
+      "priority": "P0",
+      "notes": "Flat black board with cyan trim, 332 tris; also the pickup-glide token. CC-BY: needs the in-game credits screen while it ships; the Tripo glide-board replaces it and removes the credit."
+    },
+    {
+      "kitModel": "pickup-shield",
+      "source": "procedural",
+      "title": "Shield bubble",
+      "creator": "RUNSHIFT (code)",
+      "licence": "own work",
+      "priority": "P0",
+      "notes": "No free model fits: a fresnel sphere (WP-33) or the Tripo pickup-shield. Not credited."
+    },
+    {
+      "kitModel": "barrier-low",
+      "source": "polypizza",
+      "id": "cM3aJPU9NS",
+      "url": "https://poly.pizza/m/cM3aJPU9NS",
+      "title": "Traffic Barrier",
+      "creator": "Quaternius",
+      "licence": "CC0 1.0",
+      "priority": "P0",
+      "notes": "Red-and-white striped board on A-frame legs, 364 tris: fits barrierLow (w 1.8, y 0-1.0, d 0.4, jump)."
+    },
+    {
+      "kitModel": "scaffolding",
+      "alsoFor": ["barrier-high"],
+      "source": "polypizza",
+      "id": "AYQd5RQ8w4",
+      "url": "https://poly.pizza/m/AYQd5RQ8w4",
+      "title": "Scaffolding",
+      "creator": "lakescorp",
+      "licence": "CC0 1.0",
+      "priority": "P0",
+      "notes": "Not a scaffold tower: a long horizontal steel truss, 384 tris. Use it as the scaffolding beam on facades and as the overhead beam of barrier-high (y 1.05-2.2, slide), on two posts the bake adds."
+    },
+    {
+      "kitModel": "blocker",
+      "source": "polypizza",
+      "id": "PKsbolkZSr",
+      "url": "https://poly.pizza/m/PKsbolkZSr",
+      "title": "Dumpster",
+      "creator": "Quaternius",
+      "licence": "CC0 1.0",
+      "priority": "P0",
+      "notes": "Green dumpster, 302 tris. The blocker box is y 0-2.6, d 1.2 (dodge), taller than a dumpster: scale or stack it to the obstacles.json box; if it looks squashed use a Kenney City Kit (Roads) piece or a Tripo prop."
+    },
+    {
+      "kitModel": "car-taxi",
+      "source": "polypizza",
+      "id": "x43lOScTpN",
+      "url": "https://poly.pizza/m/x43lOScTpN",
+      "title": "Taxi",
+      "creator": "Quaternius",
+      "licence": "CC0 1.0",
+      "priority": "P0",
+      "notes": "Yellow taxi, 2426 tris; car box w 1.9, y 0-1.6, d 4.4. Rail in the Air ships the same model."
+    },
+    {
+      "kitModel": "metro-car",
+      "source": "polypizza",
+      "id": "ggMOV8muH6",
+      "url": "https://poly.pizza/m/ggMOV8muH6",
+      "title": "High Speed Wagon",
+      "creator": "Quaternius",
+      "licence": "CC0 1.0",
+      "priority": "P0",
+      "notes": "Placeholder metro car until the Tripo metro-car arrives: a streamlined white-and-teal carriage, 4988 tris (simplify). From Quaternius's Modular Train Pack (poly.pizza bundle jYEybkFVr1). metroCar box w 2.0, y 0-3.1, d 12."
+    },
+    {
+      "kitModel": "roof-unit",
+      "source": "polypizza",
+      "id": "amFuyE3IF6",
+      "url": "https://poly.pizza/m/amFuyE3IF6",
+      "title": "Air Conditioner",
+      "creator": "Quaternius",
+      "licence": "CC0 1.0",
+      "priority": "P0",
+      "notes": "Grey rooftop AC unit with a pipe, 946 tris; roofUnit w 1.6, y 0-1.0, d 1.2 (jump). Also the CC0 fallback for wall-vent."
+    },
+    {
+      "kitModel": "cone",
+      "source": "polypizza",
+      "id": "lAx8JytxGD",
+      "url": "https://poly.pizza/m/lAx8JytxGD",
+      "title": "Traffic Cone",
+      "creator": "Quaternius",
+      "licence": "CC0 1.0",
+      "priority": "P0",
+      "notes": "Orange cone with white bands, 168 tris. The research calls it 'Cone'; the page title is 'Traffic Cone'."
+    },
+    {
+      "kitModel": "water-tower",
+      "source": "polypizza",
+      "id": "tMK8bhapAK",
+      "url": "https://poly.pizza/m/tMK8bhapAK",
+      "title": "Water Tower",
+      "creator": "Quaternius",
+      "licence": "CC0 1.0",
+      "priority": "P0",
+      "notes": "Rooftop water tank on a steel frame, 1158 tris (rooftop district)."
+    },
+    {
+      "kitModel": "street-lamp",
+      "source": "polypizza",
+      "id": "nFwrlcLvM5",
+      "url": "https://poly.pizza/m/nFwrlcLvM5",
+      "title": "Street Light",
+      "creator": "Quaternius",
+      "licence": "CC0 1.0",
+      "priority": "P0",
+      "notes": "Curved grey street light, 292 tris. Added by WP-21 (not in the research list): CC0 and already shipped by Rail in the Air. Kenney City Kit (Roads) street lights are the alternative."
+    },
+    {
+      "kitModel": "fire-escape",
+      "source": "polypizza",
+      "id": "ugX9DZ0wlI",
+      "url": "https://poly.pizza/m/ugX9DZ0wlI",
+      "title": "Fire Exit",
+      "creator": "J-Toastie",
+      "licence": "CC-BY 3.0",
+      "priority": "P0",
+      "notes": "Fire-escape stairs and railed landings, 1124 tris; facade dressing on wall-run buildings. From J-Toastie's City Pack bundle. CC-BY: needs the credits screen."
+    },
+    {
+      "kitModel": "roof-exit",
+      "source": "polypizza",
+      "id": "GEB4pWBI8l",
+      "url": "https://poly.pizza/m/GEB4pWBI8l",
+      "title": "Roof Exit",
+      "creator": "J-Toastie",
+      "licence": "CC-BY 3.0",
+      "priority": "P0",
+      "notes": "Pink rooftop stairwell hut with a door, 216 tris (rooftop district). From J-Toastie's City Pack bundle. CC-BY: needs the credits screen."
+    },
+    {
+      "kitModel": "billboard",
+      "alsoFor": ["wall-sign"],
+      "source": "polypizza",
+      "id": "3ALIEkWNbgR",
+      "url": "https://poly.pizza/m/3ALIEkWNbgR",
+      "title": "Billboard",
+      "creator": "Poly by Google",
+      "licence": "CC-BY 3.0",
+      "priority": "P0",
+      "notes": "Blank billboard on a single pole, 282 tris. For wall-sign the bake keeps the board and drops the pole (or uses the optional Tripo wall-sign). Listed in J-Toastie's City Pack bundle but made by Poly by Google: the credit names Poly by Google. CC-BY: needs the credits screen."
+    },
+    {
+      "kitModel": "wall-vent",
+      "source": "polypizza",
+      "id": "4m3lja-ZCkA",
+      "url": "https://poly.pizza/m/4m3lja-ZCkA",
+      "title": "Air conditioner",
+      "creator": "Poly by Google",
+      "licence": "CC-BY 3.0",
+      "priority": "P0",
+      "notes": "White condenser box with a fan grille, 1462 tris: reads as a wall-hung unit for wallVentLow (y 0.2-1.45). Listed in J-Toastie's City Pack bundle but made by Poly by Google. CC-BY: needs the credits screen; the CC0 alternative is amFuyE3IF6 (roof-unit)."
+    },
+    {
+      "kitModel": "wall-pipe",
+      "source": "procedural",
+      "title": "Wall pipe",
+      "creator": "RUNSHIFT (code)",
+      "licence": "own work",
+      "priority": "P0",
+      "notes": "A thick horizontal pipe is a cylinder: built in the bake (WP-22), or the optional Tripo wall-pipe. Not credited."
+    },
+    {
+      "kitModel": "building-a",
+      "alsoFor": ["building-b", "building-c", "building-d", "building-e", "building-f", "building-g", "building-h", "hydrant", "bench", "bin", "fence"],
+      "source": "quaternius",
+      "pack": "downtown-megakit",
+      "url": "https://quaternius.itch.io/downtown-city-megakit",
+      "title": "Downtown City MegaKit",
+      "creator": "Quaternius",
+      "licence": "CC0 1.0",
+      "priority": "P0",
+      "notes": "Manual download. Modular city buildings and street pieces (the free Standard version). WP-22 picks 8 facades for building-a..h, plus a CC0 hydrant, bench, bin and fence if the kit has them (then the CC-BY fallbacks below are not shipped)."
+    },
+    {
+      "kitModel": "hydrant",
+      "source": "polypizza",
+      "id": "eNPaSEPrst8",
+      "url": "https://poly.pizza/m/eNPaSEPrst8",
+      "title": "Fire hydrant",
+      "creator": "Poly by Google",
+      "licence": "CC-BY 3.0",
+      "priority": "P1",
+      "notes": "Red hydrant, 872 tris. Fallback only: prefer a CC0 hydrant from a pack. CC-BY: needs the credits screen if shipped."
+    },
+    {
+      "kitModel": "bench",
+      "source": "polypizza",
+      "id": "dfDUkVthkMT",
+      "url": "https://poly.pizza/m/dfDUkVthkMT",
+      "title": "Bench",
+      "creator": "Danni Bittman",
+      "licence": "CC-BY 3.0",
+      "priority": "P1",
+      "notes": "Wooden park bench, 180 tris. Fallback only: prefer a CC0 bench from a pack. CC-BY: needs the credits screen if shipped."
+    },
+    {
+      "kitModel": "bin",
+      "source": "polypizza",
+      "id": "PEtRDeGyg0",
+      "url": "https://poly.pizza/m/PEtRDeGyg0",
+      "title": "Trash Can",
+      "creator": "Zsky",
+      "licence": "CC-BY 3.0",
+      "priority": "P1",
+      "notes": "Black street bin, 176 tris. Fallback only: prefer a CC0 bin from a pack. CC-BY: needs the credits screen if shipped."
+    },
+    {
+      "kitModel": "fence",
+      "source": "polypizza",
+      "id": "ZSQMyIqPTz",
+      "url": "https://poly.pizza/m/ZSQMyIqPTz",
+      "title": "Fence",
+      "creator": "J-Toastie",
+      "licence": "CC-BY 3.0",
+      "priority": "P1",
+      "notes": "Chain-link fence panel, 1040 tris. Fallback only: prefer a CC0 fence from a pack. CC-BY: needs the credits screen if shipped."
+    },
+    {
+      "kitModel": "barrier-low",
+      "source": "polypizza",
+      "id": "4mrO9ueiQr",
+      "url": "https://poly.pizza/m/4mrO9ueiQr",
+      "title": "Construction Barrier",
+      "creator": "Kenney",
+      "licence": "CC0 1.0",
+      "priority": "P1",
+      "notes": "Alternative barrier-low: a white concrete jersey barrier, 60 tris. The research attributes it to Quaternius; the page says Kenney."
+    },
+    {
+      "kitModel": "building-a",
+      "source": "polypizza",
+      "id": "AVCS8jUd2l",
+      "url": "https://poly.pizza/m/AVCS8jUd2l",
+      "title": "Big Building",
+      "creator": "Quaternius",
+      "licence": "CC0 1.0",
+      "priority": "P1",
+      "notes": "Fallback facade so the bake works before any pack zip is downloaded: a three-storey brick building, 6976 tris (simplify)."
+    },
+    {
+      "kitModel": "building-a",
+      "alsoFor": ["building-b", "building-c", "building-d", "building-e", "building-f", "building-g", "building-h"],
+      "source": "kenney",
+      "pack": "city-kit-commercial",
+      "url": "https://kenney.nl/assets/city-kit-commercial",
+      "title": "City Kit (Commercial)",
+      "creator": "Kenney",
+      "licence": "CC0 1.0",
+      "priority": "P1",
+      "notes": "Manual download. Shop fronts and skyscrapers (50 files): alternative or extra facades."
+    },
+    {
+      "role": "street-dressing",
+      "alsoFor": ["street-lamp", "cone", "barrier-low", "blocker", "fence"],
+      "source": "kenney",
+      "pack": "city-kit-roads",
+      "url": "https://kenney.nl/assets/city-kit-roads",
+      "title": "City Kit (Roads)",
+      "creator": "Kenney",
+      "licence": "CC0 1.0",
+      "priority": "P1",
+      "notes": "Manual download. Road pieces, street lights, road signs, traffic lights, construction props and a dumpster (90 files)."
+    },
+    {
+      "role": "traffic",
+      "alsoFor": ["car-taxi"],
+      "source": "kenney",
+      "pack": "car-kit",
+      "url": "https://kenney.nl/assets/car-kit",
+      "title": "Car Kit",
+      "creator": "Kenney",
+      "licence": "CC0 1.0",
+      "priority": "P1",
+      "notes": "Manual download. More cars for obstacle and parked-car variety (45 files)."
+    },
+    {
+      "role": "subway",
+      "alsoFor": ["metro-car"],
+      "source": "kenney",
+      "pack": "train-kit",
+      "url": "https://kenney.nl/assets/train-kit",
+      "title": "Train Kit",
+      "creator": "Kenney",
+      "licence": "CC0 1.0",
+      "priority": "P1",
+      "notes": "Manual download. Trains, trams and track (100 files) for the subway district (WP-31, M3)."
+    },
+    {
+      "role": "city-props",
+      "source": "kaykit",
+      "pack": "city-builder-bits",
+      "url": "https://kaylousberg.itch.io/city-builder-bits",
+      "title": "KayKit: City Builder Bits",
+      "creator": "Kay Lousberg",
+      "licence": "CC0 1.0",
+      "priority": "P1",
+      "notes": "Manual download. Cute low-poly buildings and props. The page asks people not to resell unmodified copies (a request on top of CC0)."
+    },
+    {
+      "role": "animation-library",
+      "source": "quaternius",
+      "pack": "ual2",
+      "url": "https://quaternius.itch.io/universal-animation-library-2",
+      "title": "Universal Animation Library 2",
+      "creator": "Quaternius",
+      "licence": "CC0 1.0",
+      "priority": "P1",
+      "notes": "Manual download. SLIDE, SLIDE_LOOP, NINJUMP_JUMP/LAND, KNOCKBACK and WAVE for the optional Blender retarget (WP-51, docs/BLENDER-RETARGET.md). Ships with and without root motion: take the version with root motion disabled."
+    },
+    {
+      "kitModel": "metro-car",
+      "source": "polypizza",
+      "id": "mJZDSqyzlk",
+      "url": "https://poly.pizza/m/mJZDSqyzlk",
+      "title": "High Speed Front",
+      "creator": "Quaternius",
+      "licence": "CC0 1.0",
+      "priority": "P2",
+      "notes": "Optional nose car to lead a train of High Speed Wagons, 5024 tris. Modular Train Pack."
+    },
+    {
+      "role": "subway",
+      "source": "polypizza",
+      "id": "huCpr8nhu0",
+      "url": "https://poly.pizza/m/huCpr8nhu0",
+      "title": "Railway Track Straight",
+      "creator": "Quaternius",
+      "licence": "CC0 1.0",
+      "priority": "P2",
+      "notes": "Optional rails for the subway floor, 1420 tris (the tunnel itself is procedural). Modular Train Pack."
+    },
+    {
+      "role": "prop:gold-ingots",
+      "source": "polypizza",
+      "id": "3jRhAgbc6t",
+      "url": "https://poly.pizza/m/3jRhAgbc6t",
+      "title": "Gold Ingots",
+      "creator": "Quaternius",
+      "licence": "CC0 1.0",
+      "priority": "P2",
+      "notes": "Stack of gold bars, 648 tris: optional for the thief's gold bursts or the results screen."
+    },
+    {
+      "kitModel": "metro-car",
+      "source": "quaternius",
+      "pack": "modular-train",
+      "url": "https://quaternius.com/packs/modulartrain.html",
+      "title": "Modular Train Pack",
+      "creator": "Quaternius",
+      "licence": "CC0 1.0",
+      "priority": "P2",
+      "notes": "Manual download, optional: 15 models on quaternius.com; 11 of them are on poly.pizza and the ones RUNSHIFT needs are fetched from there."
+    },
+    {
+      "role": "animation-library",
+      "source": "quaternius",
+      "pack": "ual1",
+      "url": "https://quaternius.itch.io/universal-animation-library",
+      "title": "Universal Animation Library",
+      "creator": "Quaternius",
+      "licence": "CC0 1.0",
+      "priority": "P2",
+      "notes": "Manual download, optional: the first library (locomotion, jumps) if UAL2 lacks a clip."
+    },
+    {
+      "role": "animation-library",
+      "source": "kaykit",
+      "pack": "character-animations",
+      "url": "https://kaylousberg.itch.io/kaykit-character-animations",
+      "title": "KayKit: Character Animations",
+      "creator": "Kay Lousberg",
+      "licence": "CC0 1.0",
+      "priority": "P2",
+      "notes": "Manual download, optional: 150+ clips made for KayKit characters; retargeting to other rigs may look off."
+    },
+    {
+      "role": "sfx",
+      "source": "kenney",
+      "pack": "digital-audio",
+      "url": "https://kenney.nl/assets/digital-audio",
+      "title": "Digital Audio",
+      "creator": "Kenney",
+      "licence": "CC0 1.0",
+      "priority": "P2",
+      "notes": "Manual download, optional (WP-35): synthesised sound is the default to keep the download small."
+    },
+    {
+      "role": "sfx",
+      "source": "kenney",
+      "pack": "interface-sounds",
+      "url": "https://kenney.nl/assets/interface-sounds",
+      "title": "Interface Sounds",
+      "creator": "Kenney",
+      "licence": "CC0 1.0",
+      "priority": "P2",
+      "notes": "Manual download, optional (WP-35)."
+    },
+    {
+      "role": "sfx",
+      "source": "kenney",
+      "pack": "impact-sounds",
+      "url": "https://kenney.nl/assets/impact-sounds",
+      "title": "Impact Sounds",
+      "creator": "Kenney",
+      "licence": "CC0 1.0",
+      "priority": "P2",
+      "notes": "Manual download, optional (WP-35)."
+    },
+    {
+      "role": "sfx",
+      "source": "kenney",
+      "pack": "casino-audio",
+      "url": "https://kenney.nl/assets/casino-audio",
+      "title": "Casino Audio",
+      "creator": "Kenney",
+      "licence": "CC0 1.0",
+      "priority": "P2",
+      "notes": "Manual download, optional (WP-35): coin and chip sounds."
+    },
+    {
+      "role": "sfx",
+      "source": "kenney",
+      "pack": "sci-fi-sounds",
+      "url": "https://kenney.nl/assets/sci-fi-sounds",
+      "title": "Sci-fi Sounds",
+      "creator": "Kenney",
+      "licence": "CC0 1.0",
+      "priority": "P2",
+      "notes": "Manual download, optional (WP-35): power-up sounds."
+    },
+    {
+      "role": "music",
+      "source": "kenney",
+      "pack": "music-jingles",
+      "url": "https://kenney.nl/assets/music-jingles",
+      "title": "Music Jingles",
+      "creator": "Kenney",
+      "licence": "CC0 1.0",
+      "priority": "P2",
+      "notes": "Manual download, optional (WP-35): short jingles for results and new best."
+    },
+    {
+      "role": "sky",
+      "source": "polyhaven",
+      "pack": "kloofendal-puresky",
+      "url": "https://polyhaven.com/a/kloofendal_48d_partly_cloudy_puresky",
+      "title": "Kloofendal 48d Partly Cloudy (Pure Sky)",
+      "creator": "Poly Haven",
+      "licence": "CC0 1.0",
+      "priority": "P2",
+      "notes": "Optional day sky (WP-25); the default sky is a gradient. Take the 1k HDR: HDRIs are large."
+    },
+    {
+      "role": "sky",
+      "source": "polyhaven",
+      "pack": "rooftop-night",
+      "url": "https://polyhaven.com/a/rooftop_night",
+      "title": "Rooftop Night",
+      "creator": "Poly Haven",
+      "licence": "CC0 1.0",
+      "priority": "P2",
+      "notes": "Optional night sky (WP-25). Take the 1k HDR."
+    }
+  ],
+  "packs": {
+    "downtown-megakit": {
+      "source": "quaternius",
+      "title": "Downtown City MegaKit",
+      "creator": "Quaternius",
+      "url": "https://quaternius.itch.io/downtown-city-megakit",
+      "folder": "asset-sources/quaternius/downtown-megakit/",
+      "licence": "CC0 1.0",
+      "priority": "P0",
+      "download": "itch.io: Download Now, then 'No thanks, just take me to the downloads' (or name a price), then the free zip. The quaternius.com page links to the same itch.io download.",
+      "pages": [
+        { "slug": "quaternius-downtown-megakit-itch", "url": "https://quaternius.itch.io/downtown-city-megakit" },
+        { "slug": "quaternius-downtown-megakit-site", "url": "https://quaternius.com/packs/downtowncitymegakit.html" }
+      ]
+    },
+    "ual2": {
+      "source": "quaternius",
+      "title": "Universal Animation Library 2",
+      "creator": "Quaternius",
+      "url": "https://quaternius.itch.io/universal-animation-library-2",
+      "folder": "asset-sources/quaternius/ual2/",
+      "licence": "CC0 1.0",
+      "priority": "P1",
+      "download": "itch.io: Download Now, then 'No thanks, just take me to the downloads', then the free zip (the version with root motion disabled, glTF/GLB).",
+      "pages": [
+        { "slug": "quaternius-ual2-itch", "url": "https://quaternius.itch.io/universal-animation-library-2" },
+        { "slug": "quaternius-ual2-site", "url": "https://quaternius.com/packs/universalanimationlibrary2.html" }
+      ]
+    },
+    "ual1": {
+      "source": "quaternius",
+      "title": "Universal Animation Library",
+      "creator": "Quaternius",
+      "url": "https://quaternius.itch.io/universal-animation-library",
+      "folder": "asset-sources/quaternius/ual1/",
+      "licence": "CC0 1.0",
+      "priority": "P2",
+      "download": "itch.io: Download Now, then 'No thanks, just take me to the downloads', then the free zip.",
+      "pages": [
+        { "slug": "quaternius-ual1-itch", "url": "https://quaternius.itch.io/universal-animation-library" }
+      ]
+    },
+    "modular-train": {
+      "source": "quaternius",
+      "title": "Modular Train Pack",
+      "creator": "Quaternius",
+      "url": "https://quaternius.com/packs/modulartrain.html",
+      "folder": "asset-sources/quaternius/modular-train/",
+      "licence": "CC0 1.0",
+      "priority": "P2",
+      "download": "quaternius.com: Download. Optional: the models RUNSHIFT uses are fetched from poly.pizza.",
+      "pages": [
+        { "slug": "quaternius-modular-train-site", "url": "https://quaternius.com/packs/modulartrain.html" }
+      ]
+    },
+    "city-kit-commercial": {
+      "source": "kenney",
+      "title": "City Kit (Commercial)",
+      "creator": "Kenney",
+      "url": "https://kenney.nl/assets/city-kit-commercial",
+      "folder": "asset-sources/kenney/city-kit-commercial/",
+      "licence": "CC0 1.0",
+      "priority": "P1",
+      "download": "kenney.nl: Download (a donation is optional).",
+      "pages": [
+        { "slug": "kenney-city-kit-commercial", "url": "https://kenney.nl/assets/city-kit-commercial" }
+      ]
+    },
+    "city-kit-roads": {
+      "source": "kenney",
+      "title": "City Kit (Roads)",
+      "creator": "Kenney",
+      "url": "https://kenney.nl/assets/city-kit-roads",
+      "folder": "asset-sources/kenney/city-kit-roads/",
+      "licence": "CC0 1.0",
+      "priority": "P1",
+      "download": "kenney.nl: Download.",
+      "pages": [
+        { "slug": "kenney-city-kit-roads", "url": "https://kenney.nl/assets/city-kit-roads" }
+      ]
+    },
+    "car-kit": {
+      "source": "kenney",
+      "title": "Car Kit",
+      "creator": "Kenney",
+      "url": "https://kenney.nl/assets/car-kit",
+      "folder": "asset-sources/kenney/car-kit/",
+      "licence": "CC0 1.0",
+      "priority": "P1",
+      "download": "kenney.nl: Download.",
+      "pages": [
+        { "slug": "kenney-car-kit", "url": "https://kenney.nl/assets/car-kit" }
+      ]
+    },
+    "train-kit": {
+      "source": "kenney",
+      "title": "Train Kit",
+      "creator": "Kenney",
+      "url": "https://kenney.nl/assets/train-kit",
+      "folder": "asset-sources/kenney/train-kit/",
+      "licence": "CC0 1.0",
+      "priority": "P1",
+      "download": "kenney.nl: Download.",
+      "pages": [
+        { "slug": "kenney-train-kit", "url": "https://kenney.nl/assets/train-kit" }
+      ]
+    },
+    "city-builder-bits": {
+      "source": "kaykit",
+      "title": "KayKit: City Builder Bits",
+      "creator": "Kay Lousberg",
+      "url": "https://kaylousberg.itch.io/city-builder-bits",
+      "folder": "asset-sources/kaykit/city-builder-bits/",
+      "licence": "CC0 1.0",
+      "priority": "P1",
+      "download": "itch.io: Download Now, then 'No thanks, just take me to the downloads', then the free zip.",
+      "pages": [
+        { "slug": "kaykit-city-builder-bits", "url": "https://kaylousberg.itch.io/city-builder-bits" }
+      ]
+    },
+    "character-animations": {
+      "source": "kaykit",
+      "title": "KayKit: Character Animations",
+      "creator": "Kay Lousberg",
+      "url": "https://kaylousberg.itch.io/kaykit-character-animations",
+      "folder": "asset-sources/kaykit/character-animations/",
+      "licence": "CC0 1.0",
+      "priority": "P2",
+      "download": "itch.io: Download Now, then 'No thanks, just take me to the downloads', then the free zip.",
+      "pages": [
+        { "slug": "kaykit-character-animations", "url": "https://kaylousberg.itch.io/kaykit-character-animations" }
+      ]
+    },
+    "digital-audio": {
+      "source": "kenney",
+      "title": "Digital Audio",
+      "creator": "Kenney",
+      "url": "https://kenney.nl/assets/digital-audio",
+      "folder": "asset-sources/kenney/digital-audio/",
+      "licence": "CC0 1.0",
+      "priority": "P2",
+      "download": "kenney.nl: Download.",
+      "pages": [
+        { "slug": "kenney-digital-audio", "url": "https://kenney.nl/assets/digital-audio" }
+      ]
+    },
+    "interface-sounds": {
+      "source": "kenney",
+      "title": "Interface Sounds",
+      "creator": "Kenney",
+      "url": "https://kenney.nl/assets/interface-sounds",
+      "folder": "asset-sources/kenney/interface-sounds/",
+      "licence": "CC0 1.0",
+      "priority": "P2",
+      "download": "kenney.nl: Download.",
+      "pages": [
+        { "slug": "kenney-interface-sounds", "url": "https://kenney.nl/assets/interface-sounds" }
+      ]
+    },
+    "impact-sounds": {
+      "source": "kenney",
+      "title": "Impact Sounds",
+      "creator": "Kenney",
+      "url": "https://kenney.nl/assets/impact-sounds",
+      "folder": "asset-sources/kenney/impact-sounds/",
+      "licence": "CC0 1.0",
+      "priority": "P2",
+      "download": "kenney.nl: Download.",
+      "pages": [
+        { "slug": "kenney-impact-sounds", "url": "https://kenney.nl/assets/impact-sounds" }
+      ]
+    },
+    "casino-audio": {
+      "source": "kenney",
+      "title": "Casino Audio",
+      "creator": "Kenney",
+      "url": "https://kenney.nl/assets/casino-audio",
+      "folder": "asset-sources/kenney/casino-audio/",
+      "licence": "CC0 1.0",
+      "priority": "P2",
+      "download": "kenney.nl: Download.",
+      "pages": [
+        { "slug": "kenney-casino-audio", "url": "https://kenney.nl/assets/casino-audio" }
+      ]
+    },
+    "sci-fi-sounds": {
+      "source": "kenney",
+      "title": "Sci-fi Sounds",
+      "creator": "Kenney",
+      "url": "https://kenney.nl/assets/sci-fi-sounds",
+      "folder": "asset-sources/kenney/sci-fi-sounds/",
+      "licence": "CC0 1.0",
+      "priority": "P2",
+      "download": "kenney.nl: Download.",
+      "pages": [
+        { "slug": "kenney-sci-fi-sounds", "url": "https://kenney.nl/assets/sci-fi-sounds" }
+      ]
+    },
+    "music-jingles": {
+      "source": "kenney",
+      "title": "Music Jingles",
+      "creator": "Kenney",
+      "url": "https://kenney.nl/assets/music-jingles",
+      "folder": "asset-sources/kenney/music-jingles/",
+      "licence": "CC0 1.0",
+      "priority": "P2",
+      "download": "kenney.nl: Download.",
+      "pages": [
+        { "slug": "kenney-music-jingles", "url": "https://kenney.nl/assets/music-jingles" }
+      ]
+    },
+    "kloofendal-puresky": {
+      "source": "polyhaven",
+      "title": "Kloofendal 48d Partly Cloudy (Pure Sky)",
+      "creator": "Poly Haven",
+      "url": "https://polyhaven.com/a/kloofendal_48d_partly_cloudy_puresky",
+      "folder": "asset-sources/polyhaven/",
+      "licence": "CC0 1.0",
+      "priority": "P2",
+      "download": "polyhaven.com: choose 1K and HDR, then Download. Not gitignored yet: ask the integrator before committing it.",
+      "pages": [
+        { "slug": "polyhaven-kloofendal-48d-partly-cloudy-puresky", "url": "https://polyhaven.com/a/kloofendal_48d_partly_cloudy_puresky" }
+      ]
+    },
+    "rooftop-night": {
+      "source": "polyhaven",
+      "title": "Rooftop Night",
+      "creator": "Poly Haven",
+      "url": "https://polyhaven.com/a/rooftop_night",
+      "folder": "asset-sources/polyhaven/",
+      "licence": "CC0 1.0",
+      "priority": "P2",
+      "download": "polyhaven.com: choose 1K and HDR, then Download. Not gitignored yet: ask the integrator before committing it.",
+      "pages": [
+        { "slug": "polyhaven-rooftop-night", "url": "https://polyhaven.com/a/rooftop_night" }
+      ]
+    }
+  },
+  "pages": [
+    { "slug": "quaternius-license", "url": "https://quaternius.com/license.html", "why": "Quaternius Asset License (QAL) v1.0, last updated 8/28/2026, while every Quaternius pack page and poly.pizza still say CC0" },
+    { "slug": "polyhaven-license", "url": "https://polyhaven.com/license", "why": "Poly Haven: every asset is CC0" },
+    { "slug": "cc0-1.0-deed", "url": "https://creativecommons.org/publicdomain/zero/1.0/", "why": "the CC0 1.0 deed the CC0 pages link to" },
+    { "slug": "cc-by-3.0-deed", "url": "https://creativecommons.org/licenses/by/3.0/", "why": "the CC BY 3.0 deed the CC-BY poly.pizza pages link to" },
+    { "slug": "polypizza-bundle-city-pack", "url": "https://poly.pizza/bundle/City-Pack-kJqRAIGsw0", "why": "J-Toastie's City Pack bundle: a list of models by several creators, licensed per model" },
+    { "slug": "polypizza-bundle-modular-train-pack", "url": "https://poly.pizza/bundle/Modular-Train-Pack-jYEybkFVr1", "why": "Quaternius's Modular Train Pack on poly.pizza (11 models, CC0 1.0)" }
+  ],
+  "tripo": {
+    "folder": "asset-sources/tripo/<asset>/",
+    "doc": "docs/TRIPO-ASSETS.md",
+    "licence": "the user's own generations on the paid Tripo plan (keep the receipts); free-tier output cannot ship",
+    "replaces": {
+      "hero": "kKtL4zvS3n",
+      "thief": "xGYmeDpfTu",
+      "gold-sack": "vFFblhnHtb",
+      "metro-car": "ggMOV8muH6",
+      "pickup-magnet": "dD2RIIea6WR",
+      "pickup-shield": "procedural",
+      "pickup-multiplier": "fUfTnyvYdl",
+      "glide-board": "iJ8ZSLvSUl",
+      "wall-sign": "3ALIEkWNbgR",
+      "wall-vent": "4m3lja-ZCkA",
+      "wall-pipe": "procedural"
+    }
+  },
+  "rejected": [
+    { "id": "WoXpAJT0oD", "url": "https://poly.pizza/m/WoXpAJT0oD", "title": "Cone", "creator": "J-Toastie", "licence": "CC-BY 3.0", "reason": "The CC0 Quaternius Traffic Cone (lAx8JytxGD) does the same job without a credit." },
+    { "id": "woQPFlzPHM", "url": "https://poly.pizza/m/woQPFlzPHM", "title": "Locomotive Passenger Carriage", "creator": "Quaternius", "licence": "CC0 1.0", "reason": "An old-style railway carriage: off-style for a metro car; the High Speed Wagon reads as a modern train." }
+  ]
+}

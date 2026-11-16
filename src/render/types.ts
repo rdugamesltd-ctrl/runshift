@@ -8,7 +8,7 @@ import type { ChunkStreamer, RunState } from '../game/types';
 /** Every model in the baked world kit (public/assets/world-kit.glb). */
 export type KitModel = 'barrier-low' | 'barrier-high' | 'blocker' | 'car-taxi' | 'metro-car' | 'roof-unit' | 'wall-sign' | 'wall-vent' | 'wall-pipe'
   | 'coin' | 'pickup-magnet' | 'pickup-shield' | 'pickup-multiplier' | 'pickup-glide' | 'gold-sack' | 'glide-board'
-  | 'cone' | 'water-tower' | 'scaffolding' | 'street-lamp' | 'hydrant' | 'bench' | 'bin' | 'fence' | 'roof-exit' | 'fire-escape' | 'billboard'
+  | 'cone' | 'water-tower' | 'scaffolding' | 'street-lamp' | 'street-tree' | 'hydrant' | 'bench' | 'bin' | 'fence' | 'roof-exit' | 'fire-escape' | 'billboard'
   | `building-${'a'|'b'|'c'|'d'|'e'|'f'|'g'|'h'}`;
 /** One drawable part of a kit model. `shellStart` is where the baked outline shell starts in the index buffer, or null. */
 export interface KitPart { geometry: BufferGeometry; material: Material; shellStart: number | null }

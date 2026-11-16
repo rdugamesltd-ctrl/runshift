@@ -43,14 +43,33 @@ export const PLAYER = {
   height: 1.7,
 } as const;
 
-/** The jump: g = 8·apex/airtime² = 30 m/s², take-off speed 4·apex/airtime = 9 m/s. */
+/** The ordinary jump clears low obstacles; train roofs are reached by their ramps. */
 export const JUMP = {
   /** Height of the feet at the top of a jump, m. */
   apex: 1.35,
   /** Time from take-off to landing on flat floor, s. */
   airtime: 0.6,
+  /** Share of the airtime spent rising. Above 0.5 the rise is floatier and the fall heavier (two gravities); the
+   *  apex and airtime stay as above, and so does the time spent above any height. */
+  riseShare: 0.55,
   /** Swiping down in the air drops at this speed, m/s, then slides on landing. */
   fastFallSpeed: 18,
+} as const;
+
+/** Train traffic in the three running lanes. */
+export const TRAINS = {
+  /** Chance that a generated chunk uses a train formation. */
+  chunkChance: 0.7,
+  /** Length of each visible carriage in a long train, m. */
+  carriageLength: 6,
+  /** Length of the climb from ground level to the train roof, m. */
+  rampLength: 3.4,
+  /** Maximum rise the runner can follow in one fixed step on a ramp, m. */
+  maxRampStep: 0.45,
+  /** Speed of oncoming trains along track distance, m/s. */
+  oncomingSpeed: -5,
+  /** Distance ahead at which an oncoming train starts moving, m. */
+  activationAhead: 25,
 } as const;
 
 /** The slide. */
@@ -143,19 +162,34 @@ export const STUMBLE = {
   secondWithin: 5,
 } as const;
 
-/** The chase camera. */
+/** Camera framing and motion. */
 export const CAMERA = {
+  /** First-person eye position, aim and field of view during a run. */
+  firstPerson: { eyeHeightRatio: 0.94, wallEyeHeight: 0.55, lookAhead: 12, lookDown: 0.25, minFov: 68, maxFov: 100, halfWidth: 3.7, fitDistance: 10 },
+  /**
+   * How the body moves the eye (visual only). crouchRate: the eye eases between standing and sliding height, 1/s.
+   * Landing: the eye dips landDip m per m/s of fall speed (at most landDipMax m) on a spring of springFreq rad/s
+   * with damping ratio springDamp; landLook is the share of the dip the aim follows (less than 1 nods the view).
+   * Footsteps (on the ground and walls): bob m down at each footfall, sway m side to side, bobRoll degrees.
+   * Turning: the view leans laneRoll degrees per m/s of sideways speed (at most laneRollMax) and aims lookLead s
+   * ahead of it, the sideways speed smoothed at sideRate 1/s. jumpPitch: the aim rises and falls by this many m per
+   * m/s of vertical speed. Reduced motion drops the bob and the lean and halves the dip.
+   */
+  feel: {
+    crouchRate: 22, landDip: 0.014, landDipMax: 0.2, springFreq: 17, springDamp: 0.5, landLook: 0.5,
+    bob: 0.035, sway: 0.02, bobRoll: 0.45, laneRoll: 0.16, laneRollMax: 4, lookLead: 0.035, sideRate: 18, jumpPitch: 0.05,
+  },
   /** Camera height above the floor, m. */
-  height: 3.6,
+  height: 4.5,
   /** Distance behind the player, m. */
-  back: 6.0,
+  back: 6.2,
   /** The camera looks at a point this far ahead of the player, m... */
   lookAhead: 10,
   /** ...at this height, m. */
-  lookHeight: 0.4,
+  lookHeight: 0.1,
   /** Share of the player's x and y the camera follows. */
-  followX: 0.55,
-  followY: 0.3,
+  followX: 0.7,
+  followY: 0.55,
   /** Exponential smoothing rate, 1/s. */
   stiffness: 9,
   /** Framing for any aspect ratio (src/render/cameraFit.ts): keep halfWidth m either side visible at
@@ -169,6 +203,8 @@ export const CAMERA = {
   /** While wall-running: roll toward the wall (degrees), easing time constants in and out (s), sideways
    *  offset away from the wall (m), extra FOV (degrees). */
   wall: { rollDeg: 18, tauIn: 0.1, tauOut: 0.18, offset: 0.9, fov: 4 },
+  /** While jet-gliding: extra height and pull-back, m, eased in and out with time constant tau, s. */
+  glide: { up: 2.6, back: 3.2, tau: 0.4 },
   /** Share of the wall roll kept with reduced motion. */
   reducedMotionRoll: 0.5,
   /** Far clipping plane, m. */
@@ -201,16 +237,28 @@ export const TIERS = [ { from: 0, actionsPer40: 0.5, minGap: 1.2, wallShare: 0.1
 /** The thief: d_thief = d + clamp(leadS·v, minLead, maxLead). Always ahead, never caught. */
 export const THIEF = {
   /** Lead in seconds of travel at the current speed. */
-  leadS: 0.9,
+  leadS: 1.35,
   /** Lead limits, m. */
-  minLead: 8,
-  maxLead: 26,
+  minLead: 12,
+  maxLead: 39,
   /** Lead in the tutorial, s, so his demonstrations are easy to watch. */
   tutorialLeadS: 1.6,
+  /** His own speed eases at speedRate, 1/s, towards the player's speed plus leadGain × (target lead − lead),
+   *  1/s (critically damped at leadGain = speedRate / 4), so a stumble never snaps him backwards. */
+  speedRate: 6,
+  leadGain: 1.5,
   /** Gold scattered per burst, coins [min, max]. */
   burst: [6, 10],
   /** Run distance between bursts, m [min, max] (like POWERUPS.spawnEvery). */
   burstEvery: [60, 120],
+} as const;
+
+/** The first-run tutorial (lessons in src/game/track/tutorialTrack.ts). */
+export const TUTORIAL = {
+  /** A lesson card ignores presses for this long after it appears, s (so a swipe already on its way is not taken). */
+  readTime: 0.35,
+  /** After the right press the move must show within this much sim time, s, or the run stops again for it. */
+  confirmTime: 0.25,
 } as const;
 
 /** Gold coins. */
@@ -220,19 +268,36 @@ export const COINS = {
   /** Pickup radius around the player, m. */
   radius: 0.6,
   /** Coin instances drawn at once. */
-  maxInstances: 256,
+  maxInstances: 320,
+  /** Coins in the arc over a low barrier (they follow the jump's parabola) and under a high one (at height underY). */
+  arc: 5,
+  under: 3,
+  underY: 0.45,
+  /** On plain street: a line in one lane, then (with chance switchChance) a second line in another lane. Each
+   *  line is `line` coins long, the second starts `switchGap` m after the first ends. */
+  line: 7,
+  switchChance: 0.6,
+  switchGap: 6,
 } as const;
 
 /** Score = metres × perMetre + gold × perGold. */
 export const SCORE = { perMetre: 1, perGold: 1 } as const;
 
 /**
- * Power-ups. Durations are base + perLevel × upgrade level, s. Magnet: pulls coins within `radius` m and
- * up to `ahead` m in front. Shield: takes one hit, then `invulnerable` s of safety. Multiplier: score and
- * gold × factor. Glide: rides over gaps and catches one fall. A power-up spawns every `spawnEvery` m.
+ * Power-ups. Durations are base + perLevel × upgrade level, s. Magnet: pulls coins within `radius` m across and
+ * up to `ahead` m in front. Shield: takes one hit, then `invulnerable` s of safety. Multiplier: score × factor.
+ * Glide: a jet glide `height` m up (above the trains), climbing at `climbRate` 1/s, over a line of sky coins
+ * that starts `coinsFrom` m ahead and switches lane every `coinLaneEvery` m; on landing, `landSafe` s of safety. It
+ * lands only when no gap starts within `clearAhead` s of running. The track's own coins under the flight rise into
+ * the nearest lane at sky-coin height, closing in at `liftRate` 1/s.
+ * A power-up spawns on the coin line of roughly one chunk in CHUNK.length / mean(spawnEvery), never before
+ * `firstAt` m; `pickRadius` m is the pickup reach and `weights` the odds of each kind.
  */
 export const POWERUPS = { magnet: { base: 8, perLevel: 2, radius: 4.5, ahead: 10 }, shield: { base: 15, perLevel: 3, invulnerable: 1 },
-  multiplier: { base: 10, perLevel: 2, factor: 2 }, glide: { base: 5, perLevel: 1 }, spawnEvery: [300, 450] } as const;
+  multiplier: { base: 10, perLevel: 2, factor: 2 },
+  glide: { base: 5, perLevel: 1, height: 5.2, climbRate: 4, coinsFrom: 14, coinLaneEvery: 26, landSafe: 1.2, clearAhead: 1.6, liftRate: 3 },
+  spawnEvery: [170, 280], firstAt: 120, pickRadius: 0.95,
+  weights: { magnet: 0.3, multiplier: 0.25, shield: 0.25, glide: 0.2 } } as const;
 
 /** Power-up upgrades bought with gold. `cost[n]` buys level n + 1. */
 export const UPGRADES = { maxLevel: 5, cost: [300, 800, 2000, 4500, 9000] } as const;

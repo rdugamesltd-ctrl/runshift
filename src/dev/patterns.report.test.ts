@@ -1,9 +1,18 @@
-import { it } from 'vitest';
+import { expect, it } from 'vitest';
+import { SPEED } from '../balance';
+import { PATTERNS } from '../game/track/patterns';
+import { validatePattern } from '../game/track/validator';
 
 // The pattern report (npm run patterns). Excluded from tsc and npm test.
-// WP-00 placeholder: fails loudly until WP-12 replaces it, so nobody mistakes it for a passing check.
-// TODO WP-12: every pattern solvable at its tiers' v_min and v_max, the wall-length rule, a printed table, failure on
-// any violation; WP-42: the full rule set.
+// WP-42 adds breadth-first search for shortest paths and the full difficulty catalogue.
 it('validates every pattern at its tier speed bounds', () => {
-  throw new Error('npm run patterns: not implemented yet: src/dev/patterns.report.test.ts belongs to WP-12 (docs/STATUS.md).');
+  const rows = PATTERNS.flatMap(pattern => [SPEED.start, SPEED.start + SPEED.gain].map(v => {
+    const result = validatePattern(pattern, v);
+    return { pattern: pattern.id, speed: v, tiers: pattern.tiers.join(','), actions: result.minActions,
+      gap: Number.isFinite(result.tightestGap) ? result.tightestGap.toFixed(2) : '—',
+      path: result.pathOk ? 'pass' : 'FAIL' };
+  }));
+  console.table(rows);
+  expect(rows.length).toBeGreaterThan(0);
+  expect(rows.every(row => row.path === 'pass')).toBe(true);
 });

@@ -43,6 +43,8 @@ export interface CollisionBox {
   y1: number;
   /** Speed along the track, m/s: non-zero for moving boxes such as oncoming metro cars. */
   vd: number;
+  /** Length of a climbable ramp at the near end of a train. */
+  rampLength?: number;
   /** Set when a shield broke it. Broken boxes never collide. */
   broken: boolean;
 }
@@ -66,7 +68,10 @@ export interface WallSpan {
 /** Where a wall-jump lands: the opposite wall, the floor (centre lane), or nothing (a fall). `d` is the landing distance. */
 export type WallJumpTarget = { kind: 'wall'; side: Side; d: number } | { kind: 'floor'; lane: Lane; d: number } | { kind: 'none'; d: number };
 
-/** A gold coin. `fromThief` coins are the thief's trail, revealed as he passes. */
+/**
+ * A gold coin. `fromThief` coins are dropped by the thief: hidden and out of reach until he has passed their d, then
+ * thrown down to their spot (every coin the track lays is one).
+ */
 export interface Coin {
   d: number;
   x: number;
@@ -124,6 +129,8 @@ export interface Chunk {
 export interface TrackQuery {
   /** Floor height at d, or null over a gap. */
   floorAt(d: number, x?: number): number | null;
+  /** Top of a wagon beneath x at d, or null when there is no wagon. */
+  platformAt(d: number, x: number): number | null;
   /** The wall span on `side` covering d, or null. */
   runnableWall(d: number, side: Side): WallSpan | null;
   /** Where a wall-jump off the `from` wall at d and speed v lands (rule in docs/CONVENTIONS.md). */
@@ -182,6 +189,9 @@ export interface PlayerState {
   lane: Lane;
   laneFrom: number;
   laneT: number;
+  /** Sideways speed when the lane change under way began, lanes/s (a press during a change keeps its momentum).
+   *  Absent means 0. */
+  laneV?: number;
   x: number;
   y: number;
   vy: number;
@@ -227,6 +237,8 @@ export interface RunState {
   district: District;
   cause: CrashCause | null;
   frozen: boolean;
+  /** The jet glide's sky coins, owned by the run (not the track); empty when not gliding. Additive (power-ups). */
+  airCoins: Coin[];
 }
 
 /** Something that happened in a step. Drained once per frame and routed by src/app/celebrate.ts. */

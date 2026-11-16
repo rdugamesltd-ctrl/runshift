@@ -1,3 +1,4 @@
+import { TRAINS } from '../../balance';
 import type { Band, District, Lane, ObstacleKind, PathAct, PowerUpKind, ShellKind, Side, WallObstacleKind, WallSpan } from '../types';
 
 /*
@@ -10,6 +11,13 @@ import type { Band, District, Lane, ObstacleKind, PathAct, PowerUpKind, ShellKin
 export interface PatternGap {
   t0: number;
   t1: number;
+}
+
+/** A raised stretch of floor, in beats; short steps make its front edge readable. */
+export interface PatternRise {
+  t0: number;
+  t1: number;
+  height: number;
 }
 
 /** An obstacle on a wall, from beat t for len beats. */
@@ -34,6 +42,12 @@ export interface PatternObstacle {
   kind: ObstacleKind;
   lanes: Lane[];
   len: number;
+  /** A train with a climbable ramp at the near end. */
+  ramp?: boolean;
+  /** Override for a short, steep ramp. */
+  rampLength?: number;
+  /** Train speed along the track; negative values approach the player. */
+  vd?: number;
 }
 
 /** A line of coins from beat t0 to t1: in a lane, or on a wall in a band. */
@@ -70,6 +84,7 @@ export interface Pattern {
   shell: ShellKind;
   districts: District[];
   gaps: PatternGap[];
+  rises?: PatternRise[];
   walls: PatternWall[];
   obstacles: PatternObstacle[];
   coins: PatternCoins[];
@@ -78,8 +93,226 @@ export interface Pattern {
   actions: number;
 }
 
-/** Every pattern, parsed at load. WP-00 stub: none. TODO WP-02: parse patterns/*.json, throwing with id + field. */
-export const PATTERNS: readonly Pattern[] = [];
+/** A small first set of street patterns. WP-02 expands these into the full JSON catalogue. */
+export const PATTERNS: readonly Pattern[] = [
+  {
+    id: 'dodge-left', tiers: [0, 1, 2, 3, 4], weight: 1, beats: 1.1, shell: 'street', districts: ['street'],
+    gaps: [], walls: [], obstacles: [
+      { t: 0.7, kind: 'blocker', lanes: [0], len: 0 },
+      { t: 0.7, kind: 'barrierLow', lanes: [1], len: 0 },
+    ],
+    coins: [{ t0: 0.8, t1: 1.1, lane: -1 }], pickups: [],
+    path: [{ t: 0.2, lane: -1 }], actions: 1,
+  },
+  {
+    id: 'dodge-right', tiers: [0, 1, 2, 3, 4], weight: 1, beats: 1.1, shell: 'street', districts: ['street'],
+    gaps: [], walls: [], obstacles: [
+      { t: 0.7, kind: 'blocker', lanes: [0], len: 0 },
+      { t: 0.7, kind: 'barrierLow', lanes: [-1], len: 0 },
+    ],
+    coins: [{ t0: 0.8, t1: 1.1, lane: 1 }], pickups: [],
+    path: [{ t: 0.2, lane: 1 }], actions: 1,
+  },
+  {
+    id: 'jump-low', tiers: [0, 1, 2, 3, 4], weight: 1, beats: 1.1, shell: 'street', districts: ['street'],
+    gaps: [], walls: [], obstacles: [
+      { t: 0.7, kind: 'barrierLow', lanes: [0], len: 0 },
+      { t: 0.7, kind: 'blocker', lanes: [-1], len: 0 },
+    ],
+    coins: [], pickups: [], path: [{ t: 0.5, lane: 0, act: 'jump' }], actions: 1,
+  },
+  {
+    id: 'slide-high', tiers: [0, 1, 2, 3, 4], weight: 1, beats: 1.1, shell: 'street', districts: ['street'],
+    gaps: [], walls: [], obstacles: [
+      { t: 0.7, kind: 'barrierHigh', lanes: [0], len: 0 },
+      { t: 0.7, kind: 'blocker', lanes: [1], len: 0 },
+    ],
+    coins: [], pickups: [], path: [{ t: 0.5, lane: 0, act: 'slide' }], actions: 1,
+  },
+  {
+    id: 'raised-hurdle', tiers: [0, 1, 2, 3, 4], weight: 1, beats: 1.1, shell: 'street', districts: ['street'],
+    gaps: [], rises: [{ t0: 0.16, t1: 0.96, height: 0.6 }], walls: [],
+    obstacles: [{ t: 0.7, kind: 'barrierLow', lanes: [0], len: 0 },
+      { t: 0.7, kind: 'blocker', lanes: [1], len: 0 }],
+    coins: [{ t0: 0.79, t1: 0.9, lane: -1 }], pickups: [],
+    path: [{ t: 0.5, lane: 0, act: 'jump' }], actions: 1,
+  },
+  {
+    id: 'raised-sides', tiers: [0, 1, 2, 3, 4], weight: 1, beats: 1.1, shell: 'street', districts: ['street'],
+    gaps: [], rises: [{ t0: 0.16, t1: 0.96, height: 0.6 }], walls: [],
+    obstacles: [{ t: 0.7, kind: 'blocker', lanes: [-1, 1], len: 0 }],
+    coins: [{ t0: 0.62, t1: 0.9, lane: 0 }], pickups: [],
+    path: [], actions: 0,
+  },
+  {
+    id: 'train-roofs', tiers: [0, 1, 2, 3, 4], weight: 1, beats: 1.5, shell: 'street', districts: ['street', 'subway'],
+    gaps: [], walls: [], obstacles: [
+      { t: 0.7, kind: 'metroCar', lanes: [0], len: 0.75, ramp: true },
+      { t: 0.83, kind: 'metroCar', lanes: [1], len: 0.62, vd: TRAINS.oncomingSpeed },
+    ],
+    coins: [{ t0: 0.87, t1: 1.35, lane: 0 }], pickups: [],
+    path: [], actions: 0,
+  },
+  {
+    id: 'train-left', tiers: [0, 1, 2, 3, 4], weight: 1, beats: 1.5, shell: 'street', districts: ['street', 'subway'],
+    gaps: [], walls: [], obstacles: [
+      { t: 0.7, kind: 'metroCar', lanes: [0], len: 0.75, ramp: true },
+      { t: 0.7, kind: 'metroCar', lanes: [-1], len: 0.75 },
+    ],
+    coins: [{ t0: 0.87, t1: 1.35, lane: 0 }], pickups: [],
+    path: [], actions: 0,
+  },
+  {
+    id: 'train-three', tiers: [0, 1, 2, 3, 4], weight: 1, beats: 1.5, shell: 'street', districts: ['street', 'subway'],
+    gaps: [], walls: [], obstacles: [
+      { t: 0.7, kind: 'metroCar', lanes: [0], len: 0.75, ramp: true },
+      { t: 0.7, kind: 'metroCar', lanes: [-1], len: 0.75 },
+      { t: 0.83, kind: 'metroCar', lanes: [1], len: 0.62, vd: TRAINS.oncomingSpeed },
+    ],
+    coins: [{ t0: 0.87, t1: 1.35, lane: 0 }], pickups: [],
+    path: [], actions: 0,
+  },
+  {
+    id: 'train-hop', tiers: [4], weight: 0.7, beats: 1.5, shell: 'street', districts: ['street', 'subway'],
+    gaps: [], walls: [], obstacles: [
+      { t: 0.7, kind: 'metroCar', lanes: [0], len: 0.45, ramp: true, rampLength: 2.4 },
+      { t: 0.79, kind: 'metroCar', lanes: [1], len: 0.52 },
+      { t: 1.23, kind: 'metroCar', lanes: [0], len: 0.27 },
+    ],
+    coins: [{ t0: 0.87, t1: 1.08, lane: 0 }, { t0: 1.36, t1: 1.43, lane: 0 }], pickups: [],
+    path: [{ t: 1.04, lane: 0, act: 'jump' }], actions: 1,
+  },
+  // Rail-yard set: rows across all three tracks, zigzags, side-lane ramp climbs and oncoming dodges.
+  {
+    id: 'row-jump', tiers: [0, 1, 2, 3, 4], weight: 1, beats: 1.1, shell: 'street', districts: ['street', 'subway'],
+    gaps: [], walls: [], obstacles: [{ t: 0.7, kind: 'barrierLow', lanes: [-1, 0, 1], len: 0 }],
+    coins: [{ t0: 0.2, t1: 0.45, lane: 0 }], pickups: [], path: [{ t: 0.5, lane: 0, act: 'jump' }], actions: 1,
+  },
+  {
+    id: 'row-slide', tiers: [0, 1, 2, 3, 4], weight: 1, beats: 1.1, shell: 'street', districts: ['street', 'subway'],
+    gaps: [], walls: [], obstacles: [{ t: 0.7, kind: 'barrierHigh', lanes: [-1, 0, 1], len: 0 }],
+    coins: [{ t0: 0.2, t1: 0.45, lane: 0 }], pickups: [], path: [{ t: 0.5, lane: 0, act: 'slide' }], actions: 1,
+  },
+  {
+    id: 'row-mixed', tiers: [1, 2, 3, 4], weight: 1, beats: 1.1, shell: 'street', districts: ['street', 'subway'],
+    gaps: [], walls: [], obstacles: [
+      { t: 0.7, kind: 'barrierLow', lanes: [-1], len: 0 },
+      { t: 0.7, kind: 'barrierHigh', lanes: [0], len: 0 },
+      { t: 0.7, kind: 'blocker', lanes: [1], len: 0 },
+    ],
+    coins: [], pickups: [], path: [{ t: 0.5, lane: 0, act: 'slide' }], actions: 1,
+  },
+  {
+    id: 'zigzag-right', tiers: [1, 2, 3, 4], weight: 1, beats: 1.45, shell: 'street', districts: ['street', 'subway'],
+    gaps: [], walls: [], obstacles: [
+      { t: 0.55, kind: 'blocker', lanes: [-1, 0], len: 0 },
+      { t: 1.2, kind: 'blocker', lanes: [1], len: 0 },
+      { t: 1.2, kind: 'barrierLow', lanes: [-1], len: 0 },
+    ],
+    coins: [{ t0: 0.35, t1: 0.7, lane: 1 }, { t0: 0.95, t1: 1.4, lane: 0 }], pickups: [],
+    path: [{ t: 0.15, lane: 1 }, { t: 0.8, lane: 0 }], actions: 2,
+  },
+  {
+    id: 'zigzag-left', tiers: [1, 2, 3, 4], weight: 1, beats: 1.45, shell: 'street', districts: ['street', 'subway'],
+    gaps: [], walls: [], obstacles: [
+      { t: 0.55, kind: 'blocker', lanes: [0, 1], len: 0 },
+      { t: 1.2, kind: 'blocker', lanes: [-1], len: 0 },
+      { t: 1.2, kind: 'barrierLow', lanes: [1], len: 0 },
+    ],
+    coins: [{ t0: 0.35, t1: 0.7, lane: -1 }, { t0: 0.95, t1: 1.4, lane: 0 }], pickups: [],
+    path: [{ t: 0.15, lane: -1 }, { t: 0.8, lane: 0 }], actions: 2,
+  },
+  {
+    id: 'train-ramp-left', tiers: [0, 1, 2, 3, 4], weight: 1, beats: 1.5, shell: 'street', districts: ['street', 'subway'],
+    gaps: [], walls: [], obstacles: [
+      { t: 0.7, kind: 'metroCar', lanes: [-1], len: 0.75, ramp: true },
+      { t: 0.7, kind: 'metroCar', lanes: [0], len: 0.75 },
+      { t: 1.0, kind: 'blocker', lanes: [1], len: 0 },
+    ],
+    coins: [{ t0: 0.3, t1: 0.6, lane: -1 }, { t0: 0.87, t1: 1.35, lane: -1 }], pickups: [],
+    path: [{ t: 0.15, lane: -1 }], actions: 1,
+  },
+  {
+    id: 'train-ramp-right', tiers: [0, 1, 2, 3, 4], weight: 1, beats: 1.5, shell: 'street', districts: ['street', 'subway'],
+    gaps: [], walls: [], obstacles: [
+      { t: 0.7, kind: 'metroCar', lanes: [1], len: 0.75, ramp: true },
+      { t: 0.7, kind: 'metroCar', lanes: [0], len: 0.75 },
+      { t: 1.0, kind: 'blocker', lanes: [-1], len: 0 },
+    ],
+    coins: [{ t0: 0.3, t1: 0.6, lane: 1 }, { t0: 0.87, t1: 1.35, lane: 1 }], pickups: [],
+    path: [{ t: 0.15, lane: 1 }], actions: 1,
+  },
+  {
+    id: 'train-oncoming-left', tiers: [1, 2, 3, 4], weight: 1, beats: 1.5, shell: 'street', districts: ['street', 'subway'],
+    gaps: [], walls: [], obstacles: [
+      { t: 0.83, kind: 'metroCar', lanes: [0, 1], len: 0.62, vd: TRAINS.oncomingSpeed },
+    ],
+    coins: [{ t0: 0.4, t1: 1.4, lane: -1 }], pickups: [],
+    path: [{ t: 0.15, lane: -1 }], actions: 1,
+  },
+  {
+    id: 'train-oncoming-right', tiers: [1, 2, 3, 4], weight: 1, beats: 1.5, shell: 'street', districts: ['street', 'subway'],
+    gaps: [], walls: [], obstacles: [
+      { t: 0.83, kind: 'metroCar', lanes: [-1, 0], len: 0.62, vd: TRAINS.oncomingSpeed },
+    ],
+    coins: [{ t0: 0.4, t1: 1.4, lane: 1 }], pickups: [],
+    path: [{ t: 0.15, lane: 1 }], actions: 1,
+  },
+  {
+    id: 'train-corridor-jump', tiers: [0, 1, 2, 3, 4], weight: 1, beats: 1.5, shell: 'street', districts: ['street', 'subway'],
+    gaps: [], walls: [], obstacles: [
+      { t: 0.55, kind: 'metroCar', lanes: [-1, 1], len: 0.85 },
+      { t: 1.0, kind: 'barrierLow', lanes: [0], len: 0 },
+    ],
+    coins: [{ t0: 0.3, t1: 0.75, lane: 0 }], pickups: [],
+    path: [{ t: 0.8, lane: 0, act: 'jump' }], actions: 1,
+  },
+  {
+    id: 'train-corridor-slide', tiers: [1, 2, 3, 4], weight: 1, beats: 1.5, shell: 'street', districts: ['street', 'subway'],
+    gaps: [], walls: [], obstacles: [
+      { t: 0.55, kind: 'metroCar', lanes: [-1, 1], len: 0.85 },
+      { t: 1.0, kind: 'barrierHigh', lanes: [0], len: 0 },
+    ],
+    coins: [{ t0: 0.3, t1: 0.75, lane: 0 }], pickups: [],
+    path: [{ t: 0.8, lane: 0, act: 'slide' }], actions: 1,
+  },
+  {
+    id: 'wall-right-gap', tiers: [0, 1, 2, 3, 4], weight: 1, beats: 1.25, shell: 'pitWalls', districts: ['street'],
+    gaps: [{ t0: 0.5, t1: 1.0 }], walls: [{ side: 1, t0: 0, t1: 1.25, surface: 'hoarding',
+      blocks: [{ t: 0.8, len: 0.1, kind: 'wallSignHigh' }] }],
+    obstacles: [], coins: [{ t0: 0.55, t1: 0.7, wall: 1, band: 'low' }], pickups: [],
+    path: [{ t: 0.1, lane: 0, act: 'wall', side: 1, band: 'low' }], actions: 1,
+  },
+  {
+    id: 'wall-left-gap', tiers: [0, 1, 2, 3, 4], weight: 1, beats: 1.25, shell: 'pitWalls', districts: ['street'],
+    gaps: [{ t0: 0.5, t1: 1.0 }], walls: [{ side: -1, t0: 0, t1: 1.25, surface: 'hoarding', blocks: [] }],
+    obstacles: [], coins: [{ t0: 0.55, t1: 0.9, wall: -1, band: 'low' }], pickups: [],
+    path: [{ t: 0.1, lane: 0, act: 'wall', side: -1, band: 'low' }], actions: 1,
+  },
+  {
+    id: 'wall-right-swap', tiers: [4], weight: 1, beats: 1.4, shell: 'pitWalls', districts: ['street'],
+    gaps: [{ t0: 0.5, t1: 1.1 }], walls: [
+      { side: 1, t0: 0, t1: 0.8, surface: 'hoarding', blocks: [{ t: 0.7, len: 0.1, kind: 'wallPipeFull' }] },
+      { side: -1, t0: 0.6, t1: 1.4, surface: 'facade', blocks: [] },
+    ], obstacles: [], coins: [], pickups: [],
+    path: [{ t: 0.1, lane: 0, act: 'wall', side: 1, band: 'low' }, { t: 0.55, lane: 0, act: 'wallJump', side: 1 }], actions: 2,
+  },
+  {
+    id: 'wall-left-swap', tiers: [4], weight: 1, beats: 1.4, shell: 'pitWalls', districts: ['street'],
+    gaps: [{ t0: 0.5, t1: 1.1 }], walls: [
+      { side: -1, t0: 0, t1: 0.8, surface: 'facade', blocks: [{ t: 0.7, len: 0.1, kind: 'wallPipeFull' }] },
+      { side: 1, t0: 0.6, t1: 1.4, surface: 'hoarding', blocks: [] },
+    ], obstacles: [], coins: [], pickups: [],
+    path: [{ t: 0.1, lane: 0, act: 'wall', side: -1, band: 'low' }, { t: 0.55, lane: 0, act: 'wallJump', side: -1 }], actions: 2,
+  },
+  {
+    id: 'wall-right-vent', tiers: [4], weight: 1, beats: 1.25, shell: 'pitWalls', districts: ['street'],
+    gaps: [{ t0: 0.5, t1: 1.0 }], walls: [{ side: 1, t0: 0, t1: 1.25, surface: 'hoarding',
+      blocks: [{ t: 0.8, len: 0.1, kind: 'wallVentLow' }] }],
+    obstacles: [], coins: [{ t0: 0.8, t1: 0.95, wall: 1, band: 'high' }], pickups: [],
+    path: [{ t: 0.1, lane: 0, act: 'wall', side: 1, band: 'low' }, { t: 0.55, lane: 0, act: 'band', band: 'high' }], actions: 2,
+  },
+];
 
 /** The pattern with this id, or null. */
 export function patternById(id: string): Pattern | null {

@@ -1,0 +1,49 @@
+{
+  "checked": "2026-11-12",
+  "models": [
+    {
+      "kind": "building-d",
+      "id": "1bt4yYKmuK",
+      "title": "Large Building",
+      "creator": "Kenney",
+      "page": "https://poly.pizza/m/1bt4yYKmuK",
+      "download": "https://static.poly.pizza/f8a96f05-6835-411a-a98c-a9cd3d96951b.glb",
+      "licence": "CC0 1.0",
+      "sha256": "1a567f92d4aa65651dd976d4d1ea81c237bc29e6cd7b3b2d14054b78a726c6d8",
+      "bytes": 82984
+    },
+    {
+      "kind": "building-e",
+      "id": "AVCS8jUd2l",
+      "title": "Big Building",
+      "creator": "Quaternius",
+      "page": "https://poly.pizza/m/AVCS8jUd2l",
+      "download": "https://static.poly.pizza/6c49f4dd-c032-4e50-b257-68bbe01bcf16.glb",
+      "licence": "CC0 1.0",
+      "sha256": "d3b2454f1adb22db87345cb3d5e903593b76b55640f288de1fecf327086b1549",
+      "bytes": 353968
+    },
+    {
+      "kind": "building-f",
+      "id": "ZSYgIuHfYb",
+      "title": "Building",
+      "creator": "Quaternius",
+      "page": "https://poly.pizza/m/ZSYgIuHfYb",
+      "download": "https://static.poly.pizza/3449b80d-3595-4cc8-a21e-eb7d597f66df.glb",
+      "licence": "CC0 1.0",
+      "sha256": "5e68952e463c2d90a9ce4892f59fa3242fc21d0b2e27f1b325f73b38437bebb9",
+      "bytes": 426488
+    },
+    {
+      "kind": "building-g",
+      "id": "obYD8hWLTZ",
+      "title": "Skyscraper",
+      "creator": "Kenney",
+      "page": "https://poly.pizza/m/obYD8hWLTZ",
+      "download": "https://static.poly.pizza/71ba3a39-2aab-44e8-92f2-99bf5d0ba4f7.glb",
+      "licence": "CC0 1.0",
+      "sha256": "e361d6b6724ac0d17810a5fc92725a728eb87ebeb02066ff11809d5ab4202756",
+      "bytes": 88336
+    }
+  ]
+}

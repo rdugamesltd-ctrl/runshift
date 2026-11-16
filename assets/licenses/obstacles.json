@@ -1,0 +1,60 @@
+{
+  "checked": "2026-11-12",
+  "models": [
+    {
+      "kind": "barrier-low",
+      "id": "cM3aJPU9NS",
+      "title": "Traffic Barrier",
+      "creator": "Quaternius",
+      "page": "https://poly.pizza/m/cM3aJPU9NS",
+      "download": "https://static.poly.pizza/bb0861ab-63dd-4f72-8697-f75b8a2e3d93.glb",
+      "licence": "CC0 1.0",
+      "sha256": "51a0323aedbbb9b2eef7d67d7a55d4a03d271a787b7f7b9b4114fea000450bc0",
+      "bytes": 25904
+    },
+    {
+      "kind": "barrier-high",
+      "id": "AYQd5RQ8w4",
+      "title": "Scaffolding",
+      "creator": "lakescorp",
+      "page": "https://poly.pizza/m/AYQd5RQ8w4",
+      "download": "https://static.poly.pizza/79ea8731-ae53-44df-a52d-bba8a1f8d441.glb",
+      "licence": "CC0 1.0",
+      "sha256": "dbfccc0717ad2cdd9353695f3f44fea280784c3126bc2de418e45623166ab022",
+      "bytes": 49432
+    },
+    {
+      "kind": "blocker",
+      "id": "PKsbolkZSr",
+      "title": "Dumpster",
+      "creator": "Quaternius",
+      "page": "https://poly.pizza/m/PKsbolkZSr",
+      "download": "https://static.poly.pizza/235d0807-40d1-4dcc-9bc1-a9115826c546.glb",
+      "licence": "CC0 1.0",
+      "sha256": "028d71f23ffae44192c45b729603c6b5b92c1f4d77e60a237972ca92f96eecd7",
+      "bytes": 19784
+    },
+    {
+      "kind": "car-taxi",
+      "id": "x43lOScTpN",
+      "title": "Taxi",
+      "creator": "Quaternius",
+      "page": "https://poly.pizza/m/x43lOScTpN",
+      "download": "https://static.poly.pizza/3622a7bf-f213-44c8-8949-c1bdd1e961a9.glb",
+      "licence": "CC0 1.0",
+      "sha256": "14b2f982f8a501565702ecb56f917c82e9abae914fa3f76d2f622a8670598af1",
+      "bytes": 181084
+    },
+    {
+      "kind": "metro-car",
+      "id": "ggMOV8muH6",
+      "title": "High Speed Wagon",
+      "creator": "Quaternius",
+      "page": "https://poly.pizza/m/ggMOV8muH6",
+      "download": "https://static.poly.pizza/a413c84d-91df-4ad2-8848-2c627814b59f.glb",
+      "licence": "CC0 1.0",
+      "sha256": "d0ad7977a5d31b33399e5c41800f06823b661b196026a3a662a03e79804dd4a9",
+      "bytes": 171284
+    }
+  ]
+}
