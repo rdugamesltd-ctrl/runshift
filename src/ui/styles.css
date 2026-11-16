@@ -1,5 +1,5 @@
 /*
- * RUNSHIFT UI: a game's front screen, not a web page. Nothing sits on a paper card: the logo, the counters and the
+ * Catch the Thief UI: a game's front screen, not a web page. Nothing sits on a paper card: the logo, the counters and the
  * buttons float over the scene. Buttons are glossy and slanted with a dark lip under them, lettering is chunky with
  * a dark outline, and readouts sit on dark glass pills so they stay legible over any part of the world.
  */
@@ -174,8 +174,9 @@
   transform: skewX(var(--slant));
   text-shadow: 0 6px 0 var(--deep), 0 12px 18px rgba(0, 0, 0, 0.35);
 }
-.t-run { color: #fff; }
-.t-shift { color: var(--gold); }
+/* Two lines: a small white "CATCH THE" over a big gold "THIEF". */
+.t-catch { display: block; font-size: 0.5em; color: #fff; -webkit-text-stroke-width: 6px; }
+.t-thief { display: block; color: var(--gold); }
 .logo-tag {
   --stroke: 3px;
   display: inline-block;
@@ -570,7 +571,7 @@ kbd {
   .menu-logo { left: 0; right: 0; top: calc(var(--safe-t) + 6px); text-align: center; }
   .game-title { font-size: min(17vw, 84px); }
   .menu-stats { top: auto; bottom: calc(var(--safe-b) + 214px); left: 50%; right: auto; translate: -50% 0; }
-  .menu-tools { left: auto; right: var(--safe-r); bottom: auto; top: calc(var(--safe-t) + min(17vw, 84px) + 64px); flex-direction: column; }
+  .menu-tools { left: auto; right: var(--safe-r); bottom: auto; top: calc(var(--safe-t) + min(17vw, 84px) * 1.4 + 64px); flex-direction: column; }
   .menu-sign { left: var(--safe-l); right: var(--safe-r); width: auto; bottom: var(--safe-b); padding-inline: 4px; }
   .hud-stack { min-width: 95px; }
   .hud-score { font-size: 36px; }

@@ -1,6 +1,6 @@
-# RUNSHIFT research notes
+# Catch the Thief research notes
 
-The research behind RUNSHIFT and the decisions it led to, copied verbatim by WP-00 from the approved
+The research behind Catch the Thief and the decisions it led to, copied verbatim by WP-00 from the approved
 implementation plan (2026-11-11), so later work packages never need the plan file. The copied sections keep
 the plan's headings. The plan's architecture, contracts, simulation rules, pattern format and milestones live
 in `docs/CONVENTIONS.md`, `docs/STATUS.md` and the contract files themselves.
@@ -81,7 +81,7 @@ License notes: Quaternius license page became "QAL v1.0" (8/28/2026) while pack 
 
 ## Facts checked in sibling code that change decisions
 
-1. Working versions: three 0.187.0, vite 8.3.6, vitest 5.1.0, typescript 7.0.2, gltf-transform 4.5.1, meshoptimizer 1.3.0, puppeteer-core 24.43.1. `sharp` 0.35.5 is used by Rail's `build-world.mjs` but undeclared; RUNSHIFT declares it.
+1. Working versions: three 0.187.0, vite 8.3.6, vitest 5.1.0, typescript 7.0.2, gltf-transform 4.5.1, meshoptimizer 1.3.0, puppeteer-core 24.43.1. `sharp` 0.35.5 is used by Rail's `build-world.mjs` but undeclared; Catch the Thief declares it.
 2. three 0.187: `Timer` exported from `three`; `PCFSoftShadowMap` removed; GLTFLoader handles EXT_ and KHR_meshopt; `SkeletonUtils.clone`/`retargetClip` exist.
 3. **OutlineEffect ignores `instanceMatrix`**, so it is wrong for InstancedMesh and renders the scene twice. Decision: hero/thief get a skinned inverted hull (`onBeforeCompile` BackSide material); props get a baked shell appended at the end of the index buffer (low quality hides it with `drawRange`).
 4. gltf-transform `quantize()` corrects skin inverse bind matrices, so characters can be quantised.

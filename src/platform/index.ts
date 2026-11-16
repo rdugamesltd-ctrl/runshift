@@ -11,7 +11,7 @@ export async function loadPlatform(): Promise<Platform> {
     if (__PLATFORM__ === 'poki') return new (await import('./poki')).PokiPlatform();
     if (__PLATFORM__ === 'crazygames') return new (await import('./crazygames')).CrazyGamesPlatform();
   } catch (error) {
-    console.warn(`RUNSHIFT: the ${__PLATFORM__} adapter did not load, playing without the portal`, error);
+    console.warn(`Catch the Thief: the ${__PLATFORM__} adapter did not load, playing without the portal`, error);
   }
   return new LocalPlatform();
 }

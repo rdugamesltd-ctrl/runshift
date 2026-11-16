@@ -231,10 +231,10 @@ export class Menus {
 
     const logo = el(screen, 'div', 'menu-logo');
     const title = el(logo, 'h1', 'game-title');
-    title.setAttribute('aria-label', 'RUNSHIFT');
-    el(title, 'span', 't-run', 'RUN');
-    el(title, 'span', 't-shift', 'SHIFT');
-    el(logo, 'div', 'logo-tag', 'CATCH THE THIEF');
+    title.setAttribute('aria-label', 'Catch the Thief');
+    el(title, 'span', 't-catch', 'CATCH THE');
+    el(title, 'span', 't-thief', 'THIEF');
+    el(logo, 'div', 'logo-tag', 'GET THE GOLD BACK!');
 
     // Best score and gold, two pills with their icon in a badge on the left.
     const stats = el(screen, 'div', 'menu-stats');

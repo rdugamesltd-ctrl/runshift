@@ -1,4 +1,4 @@
-# Source archives for RUNSHIFT
+# Source archives for Catch the Thief
 
 ## Downtown City MegaKit (required for M2)
 
