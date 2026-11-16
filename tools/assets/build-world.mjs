@@ -26,7 +26,7 @@ const archive = openZip(source);
 await MeshoptEncoder.ready;
 const io = new NodeIO().registerExtensions([EXTMeshoptCompression]).registerDependencies({ 'meshopt.encoder': MeshoptEncoder });
 const kit = new Document();
-const scene = kit.createScene('Catch the Tief world kit');
+const scene = kit.createScene('Catch the Thief world kit');
 try {
   for (const [sourceName, kitName] of models) {
     const file = extractModel(archive, sourceName, path.join(cache, sourceName));

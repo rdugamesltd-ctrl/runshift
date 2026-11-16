@@ -1,4 +1,4 @@
-# Catch the Tief status
+# Catch the Thief status
 
 Integrators update this file after every wave. Last update: M1 verified, 2026-11-12.
 

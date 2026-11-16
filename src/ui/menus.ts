@@ -231,9 +231,9 @@ export class Menus {
 
     const logo = el(screen, 'div', 'menu-logo');
     const title = el(logo, 'h1', 'game-title');
-    title.setAttribute('aria-label', 'Catch the Tief');
+    title.setAttribute('aria-label', 'Catch the Thief');
     el(title, 'span', 't-catch', 'CATCH THE');
-    el(title, 'span', 't-tief', 'TIEF');
+    el(title, 'span', 't-thief', 'THIEF');
     el(logo, 'div', 'logo-tag', 'GET THE GOLD BACK!');
 
     // Best score and gold, two pills with their icon in a badge on the left.

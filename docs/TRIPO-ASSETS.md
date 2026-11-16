@@ -1,13 +1,13 @@
 # Tripo asset requests
 
-What to generate in Tripo for Catch the Tief, and where to put the files. Free sources cover the city, obstacles,
+What to generate in Tripo for Catch the Thief, and where to put the files. Free sources cover the city, obstacles,
 coins, sounds and most animations (see `research_notes/RESEARCH.md`); the pieces below are the ones no free
-source has in Catch the Tief's style. Until they arrive the game uses placeholders (the grey box now, Quaternius
+source has in Catch the Thief's style. Until they arrive the game uses placeholders (the grey box now, Quaternius
 characters from M2), so nothing waits on them.
 
 ## Before you start
 
-- **Use the paid plan.** Free-tier output is public and CC-BY / non-commercial, which Catch the Tief cannot ship. Keep
+- **Use the paid plan.** Free-tier output is public and CC-BY / non-commercial, which Catch the Thief cannot ship. Keep
   the receipts and note the date of each generation.
 - **Characters in T-pose.** Use the `t_pose` image template, or add the line "T-pose, arms straight out, legs
   slightly apart, neutral face".

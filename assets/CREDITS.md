@@ -1,4 +1,4 @@
-# Catch the Tief asset sources
+# Catch the Thief asset sources
 
 These models are currently shipped in the game bundle. The original downloads are kept outside Git under
 `asset-sources/`; `assets/licenses/` contains the publisher licence file or source-page evidence and hashes.
@@ -23,5 +23,5 @@ These models are currently shipped in the game bundle. The original downloads ar
 | Run music (`public/assets/music/highway-jumpers.mp3`) | Supplied by the project owner | To be recorded | To be recorded | None yet |
 | Menu music (`public/assets/music/main-menu.mp3`) | Supplied by the project owner | To be recorded | To be recorded | None yet |
 
-The character models are placeholders for Catch the Tief's planned original hero and thief. Their source pages
+The character models are placeholders for Catch the Thief's planned original hero and thief. Their source pages
 were checked on 2026-11-12; see `docs/ASSET-LICENCE-NOTES.md` for the publisher's general licence as well.
