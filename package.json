@@ -24,6 +24,7 @@
     "assets:buildings": "node tools/assets/build-buildings.mjs",
     "assets:scenery": "node tools/assets/build-scenery.mjs",
     "assets:chars": "node tools/assets/build-characters.mjs",
+    "assets:cop": "node tools/assets/build-cop.mjs",
     "assets:credits": "node tools/assets/credits.mjs && node tools/assets/check-credits.mjs",
     "assets:all": "npm run assets:fetch && npm run assets:world && npm run assets:chars && npm run assets:credits",
     "inspect": "node tools/assets/inspect-models.mjs",

@@ -58,7 +58,7 @@ Integrators update this file after every wave. Last update: M1 verified, 2026-11
   catalogue to 26, all passing `npm run patterns` at 11 and 26 m/s. Camera raised (4.5 m, follows 70% of x and 55%
   of y). Empty instance batches hide themselves (no draw call); the grey-box smoke cap is 20 calls. The HUD coin
   icon got its missing CSS. Typecheck, 281 tests, patterns, build, smoke and devices pass; a headless perfect bot
-  survives 5 km on 10 of 10 seeds with power-ups. Open: HUD timers are uncoloured chips; no upgrade shop UI yet;
+  survives 5 km on 10 of 10 seeds with power-ups. Open: HUD timers are uncoloured chips; the upgrade shop UI is now in (see below);
   power-up sounds use the existing `pickup` routing only.
 - **M1 wall-run: verified (2026-11-12).** Wall attach, buffered entry, two height bands, slips, exits and wall
   jumps to a wall, floor or fall are implemented. Nine authored patterns include gaps, wall signs, vents and pipes;
@@ -161,7 +161,8 @@ replace the bodies and keep the exports:
 | `src/platform/{local,index}.ts` | WP-03 | real: local adapter, adapter chosen by `__PLATFORM__` |
 | `src/platform/{poki,crazygames}.ts` | WP-53 | behave like local |
 | `src/ui/{styles.css,hud,menus,icons}.ts` | WP-05 | fonts and palette variables; HUD and menus show nothing; `registerPanel` stores panels |
-| `src/ui/{coach,settings,upgrades,credits,credits.generated}.ts`, `powerups.css` | WP-14/43, WP-43, WP-32, WP-52 | empty |
+| `src/ui/{coach,credits,credits.generated}.ts` | WP-14/43, WP-52 | empty |
+| `src/ui/settings.ts`, `src/ui/upgrades.ts`, `powerups.css`, `src/game/systems/upgrades.ts` | WP-43, WP-32 | done: settings panel (sound, motion, graphics applied live, replay tutorial) and upgrade shop (buy levels with gold, saved at once). Power-up HUD timer colours still open. |
 | `src/render/{toon,assets,characters,fx}/*`, `world/{worldView,shells,sky,blobShadow,tunnel,rooftop}.ts` | WP-22 to WP-33 | no-op views and loaders; `makeRamp`, `PALETTE`, `createAnimationLibrary` are real |
 | `src/game/systems/{powerups,tutorial}.ts`, `track/{districts,thiefTrail}.ts` | WP-32, WP-14, WP-31, WP-34 | durations real (`base + perLevel·level`); the rest empty |
 | `tools/postbuild.mjs` | WP-53 | no-op, so `npm run build` passes |

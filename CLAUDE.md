@@ -1,7 +1,7 @@
 # CLAUDE.md
 
 RUNSHIFT: a browser endless runner built with Three.js r187, TypeScript 7 and Vite 8, for phones (touch, portrait and
-landscape) and desktops (keyboard). An original speedster hero chases a masked thief who stole gold down three
+landscape) and desktops (keyboard). An original cartoon police officer (a Tripo model, `public/assets/characters/cop.glb`) chases a masked thief who stole gold down three
 lanes (Subway Surfers style: swipe to change lane, jump and slide), and runs on the side walls where the floor is
 missing. A run is seen in first person: the hero's own arms and legs are drawn over the world
 (`src/render/characters/firstPersonBody.ts`), and `?chase` brings back the third-person chase camera. There is no

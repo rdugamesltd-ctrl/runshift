@@ -14,6 +14,7 @@ These models are currently shipped in the game bundle. The original downloads ar
 | Rear skyline building | [Skyscraper](https://poly.pizza/m/obYD8hWLTZ) | Kenney | Public Domain (CC0) | `assets/licenses/buildings.json` |
 | Temporary hero | [Animated Platformer Character](https://poly.pizza/m/kKtL4zvS3n) | Quaternius | Public Domain (CC0) | `assets/licenses/polypizza-characters.json` |
 | Temporary thief | [Ninja](https://poly.pizza/m/xGYmeDpfTu) | Quaternius | Public Domain (CC0) | `assets/licenses/polypizza-characters.json` |
+| Hero, a police officer (`public/assets/characters/cop.glb`, built by `npm run assets:cop`) | Mesh: the project owner's Tripo generation (`asset-sources/cop-model.glb`). Clips: retargeted from [Ninja](https://poly.pizza/m/xGYmeDpfTu) | Mesh: project owner (Tripo paid plan). Clips: Quaternius | Mesh: owned by the project. Clips: Public Domain (CC0) | Tripo receipt to be recorded; `assets/licenses/polypizza-characters.json` |
 | Low barrier | [Traffic Barrier](https://poly.pizza/m/cM3aJPU9NS) | Quaternius | Public Domain (CC0) | `assets/licenses/obstacles.json` |
 | High barrier | [Scaffolding](https://poly.pizza/m/AYQd5RQ8w4) | lakescorp | Public Domain (CC0) | `assets/licenses/obstacles.json` |
 | Blocker | [Dumpster](https://poly.pizza/m/PKsbolkZSr) | Quaternius | Public Domain (CC0) | `assets/licenses/obstacles.json` |

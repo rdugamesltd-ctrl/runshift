@@ -359,6 +359,8 @@ export class Menus {
       }
     }
     if (!body.childNodes.length) el(body, 'p', 'panel-empty', 'Coming soon.');
+    // A panel's own sound switch (settings) is drawn here, like the menu's, and kept current by setMuted.
+    for (const button of body.querySelectorAll<HTMLButtonElement>('[data-act="mute"]')) this.paintMute(button);
     actButton(el(sign, 'div', 'panel-foot'), 'back', 'btn btn-quiet', 'BACK', 'back');
   }
 

@@ -6,7 +6,6 @@ import {
 import { mergeGeometries } from 'three/addons/utils/BufferGeometryUtils.js';
 import { SIM, TOON } from '../../balance';
 import type { ChunkStreamer, RunState, Side } from '../../game/types';
-import { PALETTE } from '../toon/palette';
 import { makeRamp } from '../toon/ramp';
 import type { View } from '../types';
 
@@ -25,8 +24,10 @@ const LAYOUT = {
   /** The elbows point this way (out, down, back) as the arms bend. */
   elbowPole: { x: 0.5, y: -1, z: 0.35 },
   upperArm: { length: 0.28, radius: 0.05 },
-  forearm: { length: 0.26, radius: 0.044 },
-  fist: 0.058,
+  /** The forearm tapers from the elbow to the wrist. */
+  forearm: { length: 0.26, elbow: 0.05, wrist: 0.034 },
+  /** Half-sizes of the fist held thumb up, m: across (back of the hand to palm), along the forearm and top to bottom. */
+  fist: { across: 0.036, along: 0.046, high: 0.046 },
   hip: { x: 0.11, y: -0.78, z: 0.04 },
   thigh: { length: 0.44, radius: 0.08 },
   shin: { length: 0.44, radius: 0.064 },
@@ -56,6 +57,12 @@ const LAND_DAMP = 0.45;
 /** A stumble jerks the hands up and in (m at full flinch); the flinch fades at FLINCH_DECAY/s. */
 const FLINCH = { up: 0.1, inward: 0.07 } as const;
 const FLINCH_DECAY = 3.5;
+
+/** The police officer's colours, picked from his model's texture (public/assets/characters/cop.glb). */
+const COP = {
+  shirt: '#27307a', trim: '#1fc4a6', skin: '#f7c9a0', trousers: '#232c6e',
+  shoes: '#ff7a1f', soles: '#fbf7ef', strap: '#1d2233', dial: '#aebccb',
+} as const;
 
 const DEG = Math.PI / 180;
 const UP = new Vector3(0, 1, 0);
@@ -157,9 +164,11 @@ export function bodyPose(run: RunState, phase: number, out: BodyPose): BodyPose 
 /** One rigid piece of the body: its geometry and outline shell, placed in its bone by `matrix`, in one colour. */
 interface Piece { bone: Bone; geometry: BufferGeometry; shell: BufferGeometry | null; matrix: Matrix4; colour: string }
 
-/** A placement in a bone: position, a turn about x (radians) and a scale. */
-function place(x: number, y: number, z: number, turnX = 0, scale: readonly [number, number, number] = [1, 1, 1]): Matrix4 {
-  return new Matrix4().compose(new Vector3(x, y, z), new Quaternion().setFromEuler(new Euler(turnX, 0, 0)),
+/** A placement in a bone: position, a turn (radians, about x or about x, y and z in that order) and a scale. */
+function place(x: number, y: number, z: number, turn: number | readonly [number, number, number] = 0,
+  scale: readonly [number, number, number] = [1, 1, 1]): Matrix4 {
+  const [tx, ty, tz] = typeof turn === 'number' ? [turn, 0, 0] : turn;
+  return new Matrix4().compose(new Vector3(x, y, z), new Quaternion().setFromEuler(new Euler(tx, ty, tz)),
     new Vector3(scale[0], scale[1], scale[2]));
 }
 
@@ -257,59 +266,80 @@ export class FirstPersonBody implements View {
       pieces.push({ bone, geometry: capsule(radius, length), shell: capsule(radius + LAYOUT.outline, length),
         matrix: place(0, -length / 2, 0), colour });
     };
-    const fist = keep(new SphereGeometry(LAYOUT.fist, 14, 10));
-    const fistShell = shellOf(fist, 1.12);
-    const thumb = keep(new SphereGeometry(0.019, 10, 8));
-    const knuckle = keep(new SphereGeometry(0.014, 8, 6));
-    const band = keep(new CylinderGeometry(LAYOUT.forearm.radius + 0.004, LAYOUT.forearm.radius + 0.004, 0.03, 12));
-    const cuffRadius = LAYOUT.forearm.radius + 0.006;
-    const cuff = keep(new CylinderGeometry(cuffRadius, cuffRadius, 0.035, 12));
-    const cuffShell = shellOf(cuff, 1.12);
-    const pad = keep(new SphereGeometry(LAYOUT.thigh.radius * 0.95, 12, 8));
-    const padShell = shellOf(pad, 1.1);
-    const stripeRadius = LAYOUT.thigh.radius + 0.006;
-    const stripe = keep(new CylinderGeometry(stripeRadius, stripeRadius, 0.05, 12));
+    const { forearm: arm, fist: hand, outline: rim } = LAYOUT;
+    // The forearm narrows to the wrist; its outline shell is the same taper grown by the outline.
+    const forearm = keep(new CylinderGeometry(arm.elbow, arm.wrist, arm.length, 14));
+    const forearmShell = keep(new CylinderGeometry(arm.elbow + rim, arm.wrist + rim, arm.length, 14));
+    const fist = keep(new SphereGeometry(1, 18, 14));
+    const fistShell = keep(new SphereGeometry(1, 18, 14).scale(
+      1 + rim / hand.across, 1 + rim / hand.along, 1 + rim / hand.high));
+    const fingerRadius = 0.0155;
+    const finger = keep(new CapsuleGeometry(fingerRadius, 0.03, 4, 10));
+    const fingerShell = keep(new CapsuleGeometry(fingerRadius + rim * 0.6, 0.03, 4, 10));
+    const thumb = keep(new CapsuleGeometry(0.0165, 0.032, 4, 10));
+    const thumbShell = keep(new CapsuleGeometry(0.0165 + rim * 0.6, 0.032, 4, 10));
+    const strap = keep(new CylinderGeometry(arm.wrist + 0.006, arm.wrist + 0.006, 0.02, 14));
+    const strapShell = shellOf(strap, 1.12);
+    const dial = keep(new CylinderGeometry(0.012, 0.012, 0.006, 14));
+    const sleeveRadius = LAYOUT.upperArm.radius + 0.008;
+    const sleeveCuff = keep(new CylinderGeometry(sleeveRadius, sleeveRadius, 0.045, 12));
+    const sleeveCuffShell = shellOf(sleeveCuff, 1.1);
+    const hemRadius = LAYOUT.shin.radius + 0.01;
+    const hem = keep(new CylinderGeometry(hemRadius, hemRadius, 0.06, 12));
+    const hemShell = shellOf(hem, 1.1);
     const shoe = keep(new CapsuleGeometry(0.068, 0.17, 4, 10));
     const shoeShell = shellOf(shoe, 1.1);
     const sole = keep(new CylinderGeometry(0.072, 0.072, 0.035, 12));
-    const suit = PALETTE.teal;
-    const suitDark = '#0f8a7e';
 
     const build = (side: Side): Limbs => {
       const shoulder = new Bone();
       shoulder.position.set(side * LAYOUT.shoulder.x, LAYOUT.shoulder.y, LAYOUT.shoulder.z);
-      limb(shoulder, LAYOUT.upperArm.length, LAYOUT.upperArm.radius, suit);
+      limb(shoulder, LAYOUT.upperArm.length, LAYOUT.upperArm.radius, COP.shirt);
+      // The short sleeve ends above the elbow in a teal cuff; the forearms are bare.
+      pieces.push({ bone: shoulder, geometry: sleeveCuff, shell: sleeveCuffShell,
+        matrix: place(0, -LAYOUT.upperArm.length * 0.62, 0), colour: COP.trim });
       const elbow = new Bone();
       elbow.position.y = -LAYOUT.upperArm.length;
-      limb(elbow, LAYOUT.forearm.length, LAYOUT.forearm.radius, suit);
-      pieces.push({ bone: elbow, geometry: cuff, shell: cuffShell,
-        matrix: place(0, -LAYOUT.forearm.length + 0.03, 0), colour: PALETTE.cream });
-      // The glove: a fist with a thumb on its inner top side and a row of knuckles (the forearm's +z is its top).
-      const fistY = -LAYOUT.forearm.length - LAYOUT.fist * 0.6;
-      pieces.push({ bone: elbow, geometry: fist, shell: fistShell, matrix: place(0, fistY, 0, 0, [1, 1.15, 0.95]), colour: PALETTE.orange });
-      pieces.push({ bone: elbow, geometry: thumb, shell: null,
-        matrix: place(side * 0.05, fistY + 0.012, 0.024, 0, [1, 1.45, 1]), colour: PALETTE.orange });
-      for (const x of [-0.036, -0.012, 0.012, 0.036]) {
-        pieces.push({ bone: elbow, geometry: knuckle, shell: null, matrix: place(x, fistY - 0.052, 0.022), colour: '#ff9440' });
+      pieces.push({ bone: elbow, geometry: forearm, shell: forearmShell, matrix: place(0, -arm.length / 2, 0),
+        colour: COP.skin });
+      // A sprinter's fist, held thumb up with the palm in (the forearm's −y points ahead, +z is its top and
+      // +side·x its inner side): the hand, four fingers curled over its front end and stacked top to bottom
+      // (index highest, the little finger smaller), and the thumb lying along the top over the index finger.
+      const fistY = -arm.length - hand.along * 0.4;
+      pieces.push({ bone: elbow, geometry: fist, shell: fistShell,
+        matrix: place(0, fistY, 0, 0, [hand.across, hand.along, hand.high]), colour: COP.skin });
+      const fingers = [[0.029, 1], [0.009, 1], [-0.011, 0.95], [-0.029, 0.82]] as const;
+      for (const [z, size] of fingers) {
+        pieces.push({ bone: elbow, geometry: finger, shell: fingerShell,
+          matrix: place(side * 0.006, fistY - hand.along * 0.74, z, [0, 0, Math.PI / 2], [size, size, size]),
+          colour: COP.skin });
       }
-      pieces.push({ bone: elbow, geometry: band, shell: null, matrix: place(0, -LAYOUT.forearm.length * 0.45, 0), colour: suitDark });
+      pieces.push({ bone: elbow, geometry: thumb, shell: thumbShell,
+        matrix: place(side * 0.017, fistY - hand.along * 0.3, hand.high * 0.86, [0.3, 0, side * 0.15]),
+        colour: COP.skin });
+      // A watch on the left wrist.
+      if (side < 0) {
+        const wristY = -arm.length + 0.035;
+        pieces.push({ bone: elbow, geometry: strap, shell: strapShell, matrix: place(0, wristY, 0), colour: COP.strap });
+        pieces.push({ bone: elbow, geometry: dial, shell: null,
+          matrix: place(0, wristY, arm.wrist + 0.007, Math.PI / 2), colour: COP.dial });
+      }
       shoulder.add(elbow);
 
       const hip = new Bone();
       hip.position.set(side * LAYOUT.hip.x, LAYOUT.hip.y, LAYOUT.hip.z);
       hip.rotation.z = side * 3 * DEG;
-      limb(hip, LAYOUT.thigh.length, LAYOUT.thigh.radius, suitDark);
-      pieces.push({ bone: hip, geometry: stripe, shell: null,
-        matrix: place(0, -LAYOUT.thigh.length * 0.45, 0), colour: PALETTE.cream });
+      limb(hip, LAYOUT.thigh.length, LAYOUT.thigh.radius, COP.trousers);
       const knee = new Bone();
       knee.position.y = -LAYOUT.thigh.length;
-      pieces.push({ bone: knee, geometry: pad, shell: padShell, matrix: place(0, 0, -0.03), colour: PALETTE.cream });
-      limb(knee, LAYOUT.shin.length, LAYOUT.shin.radius, suitDark);
-      // The shoe lies forward along −z from the ankle, on a cream sole.
+      limb(knee, LAYOUT.shin.length, LAYOUT.shin.radius, COP.trousers);
+      // A turned-up trouser hem, then the shoe lying forward along −z from the ankle on a white sole.
+      pieces.push({ bone: knee, geometry: hem, shell: hemShell,
+        matrix: place(0, -LAYOUT.shin.length + 0.02, 0), colour: COP.trousers });
       pieces.push({ bone: knee, geometry: shoe, shell: shoeShell,
-        matrix: place(0, -LAYOUT.shin.length - 0.03, -0.08, Math.PI / 2), colour: PALETTE.orange });
+        matrix: place(0, -LAYOUT.shin.length - 0.03, -0.08, Math.PI / 2), colour: COP.shoes });
       pieces.push({ bone: knee, geometry: sole, shell: null,
-        matrix: place(0, -LAYOUT.shin.length - 0.095, -0.08, 0, [1, 1, 2.8]), colour: PALETTE.cream });
+        matrix: place(0, -LAYOUT.shin.length - 0.095, -0.08, 0, [1, 1, 2.8]), colour: COP.soles });
       hip.add(knee);
 
       this.arms.add(shoulder);
@@ -402,7 +432,7 @@ export class FirstPersonBody implements View {
     const elbow = this.reachElbow.copy(to).multiplyScalar(along).addScaledVector(pole, off);
     const wrist = this.reachWrist.copy(to).multiplyScalar(distance).sub(elbow).normalize();
     limbs.shoulder.quaternion.setFromUnitVectors(DOWN, elbow.normalize());
-    // The forearm keeps its top (+z) up, so the thumb and knuckles stay on top of the fist.
+    // The forearm keeps its top (+z) up, so the thumb stays on top of the fist.
     const yAxis = this.reachY.copy(wrist).negate();
     const xAxis = this.reachX.crossVectors(yAxis, UP);
     if (xAxis.lengthSq() < 1e-6) xAxis.set(-1, 0, 0);

@@ -1,10 +1,8 @@
-import type { RunResult, SaveData } from '../types';
-import { loadSave, SAVE_KEY, type SaveStore } from './save';
+import type { PowerUpKind, RunResult, SaveData } from '../types';
+import { loadSave, SAVE_KEY, TIP_IDS, type SaveStore } from './save';
+import { buyUpgrade } from './upgrades';
 
-/**
- * The player's progress between runs: the save, written whenever it changes.
- * TODO WP-01: anything beyond banking; WP-32: upgrade purchases.
- */
+/** The player's progress between runs: the save, written whenever it changes. */
 export class Progress {
   data: SaveData;
   private readonly store: SaveStore;
@@ -28,6 +26,25 @@ export class Progress {
     data.totals.runs++;
     data.totals.metres += Math.floor(result.distance);
     data.totals.goldEarned += result.gold;
+    this.save();
+  }
+
+  /** Buys `kind`'s next upgrade level with gold (`buyUpgrade`). Saves and returns true when it was bought. */
+  buyUpgrade(kind: PowerUpKind): boolean {
+    if (!buyUpgrade(this.data, kind)) return false;
+    this.save();
+    return true;
+  }
+
+  /** Changes one setting and saves. */
+  setSetting<K extends keyof SaveData['settings']>(key: K, value: SaveData['settings'][K]): void {
+    this.data.settings[key] = value;
+    this.save();
+  }
+
+  /** Forgets the finished tutorial lessons, so the next run starts with the tutorial again. Saves. */
+  replayTutorial(): void {
+    this.data.tips = this.data.tips.filter((tip) => !TIP_IDS.includes(tip));
     this.save();
   }
 }

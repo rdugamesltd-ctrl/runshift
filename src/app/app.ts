@@ -32,6 +32,8 @@ import { WorldView } from '../render/world/worldView';
 import { Hud, setMotionPreference } from '../ui/hud';
 import { Coach } from '../ui/coach';
 import { Menus } from '../ui/menus';
+import { mountSettings } from '../ui/settings';
+import { mountUpgrades } from '../ui/upgrades';
 import { bootDone, mark } from './boot';
 import { celebrate } from './celebrate';
 import { startLoop, watchContextLoss, watchPageLeave, type Loop } from './loop';
@@ -92,7 +94,8 @@ export async function startApp(): Promise<void> {
   setMotionPreference(params.reduced ? 'on' : progress.data.settings.reducedMotion);
   const motionReduced = reducedMotion(params.reduced, progress.data.settings.reducedMotion,
     matchMedia('(prefers-reduced-motion: reduce)').matches);
-  const quality = fixedQuality(params.quality, progress.data.settings.quality);
+  /** The fixed quality ('low', 'high'), or null while it adapts. The settings panel changes it. */
+  let quality = fixedQuality(params.quality, progress.data.settings.quality);
   // Without a GPU (software WebGL) the game starts at its lowest quality, unless a quality was asked for.
   const slow = quality === 'low' || (quality === null && softwareRendering());
   const stage = createStage(canvas, { antialias: !slow, quality: slow ? LOWEST_QUALITY : progress.data.perf.level });
@@ -185,6 +188,25 @@ export async function startApp(): Promise<void> {
   menus.on('menu', toMenu);
   menus.on('resume', () => pause.resume());
   menus.on('mute', toggleMute);
+  menus.registerPanel('upgrades', (panel) => mountUpgrades(panel, progress, {
+    bought: () => audio.uiClick('primary'),
+  }));
+  menus.registerPanel('settings', (panel) => mountSettings(panel, progress, {
+    motion(value) {
+      // ?reduced still wins over the setting, as it does at start-up.
+      setMotionPreference(params.reduced ? 'on' : value);
+      const reduced = reducedMotion(params.reduced, value, matchMedia('(prefers-reduced-motion: reduce)').matches);
+      cameraRig.reducedMotion = reduced;
+      viewContext.motion.reduced = reduced;
+    },
+    quality(value) {
+      quality = fixedQuality(params.quality, value);
+      // Multisampling is fixed when the renderer is made: only the resolution and shadows follow at once.
+      stage.setQuality(quality === 'low' || (quality === null && softwareRendering()) ? LOWEST_QUALITY
+        : quality === 'high' ? 0 : progress.data.perf.level);
+    },
+    changed: () => audio.uiClick(),
+  }));
   hud.on('pause', () => { if (session.screen === 'run') pause.pause(); });
   input.onPause = () => {
     if (menus.back()) return;

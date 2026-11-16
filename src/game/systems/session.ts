@@ -49,9 +49,14 @@ export class Session {
     this.play();
   }
 
-  /** Back to the menu. */
+  /**
+   * Back to the menu. The run is put back to a fresh start, so the hero stands idle on the menu instead of held in
+   * the pose he left in, and the frozen run's last step (prev ≠ now) cannot shimmer under the render interpolation.
+   */
   toMenu(): void {
     this.paused = false;
+    this.resultsWait = 0;
+    this.run.reset(this.options);
     this.setScreen('menu');
   }
 

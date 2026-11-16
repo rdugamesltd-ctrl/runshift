@@ -1,1 +1,105 @@
-/* Power-up HUD timers and the upgrades panel. WP-00 stub: empty. TODO WP-32. */
+/* The upgrades panel (src/ui/upgrades.ts). Power-up colours match the HUD and pickups. */
+
+.up-magnet { --pu: #ff5a4a; }
+.up-shield { --pu: #4fb6ff; }
+.up-multiplier { --pu: #ffbf2a; }
+.up-glide { --pu: #17d0b6; }
+
+.up-wallet {
+  --stroke: 3px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: fit-content;
+  margin: 2px auto 10px;
+  padding: 4px 16px 4px 6px;
+  border: 2px solid var(--glass-edge);
+  border-radius: 999px;
+  background: var(--glass);
+  font: 24px var(--display);
+  color: var(--gold);
+}
+.up-wallet svg { width: 28px; height: 28px; }
+
+.up-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; }
+.up-card {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 10px 10px 8px;
+  border: 2px solid rgba(255, 255, 255, 0.08);
+  border-left: 5px solid var(--pu);
+  border-radius: 14px;
+  background: rgba(0, 0, 0, 0.22);
+}
+.up-card.is-bought { animation: up-bought 0.42s cubic-bezier(0.34, 1.45, 0.64, 1) both; }
+@keyframes up-bought {
+  0% { transform: scale(0.97); background: rgba(255, 191, 42, 0.32); }
+  100% { transform: scale(1); background: rgba(0, 0, 0, 0.22); }
+}
+
+.up-badge {
+  display: grid;
+  flex: none;
+  place-items: center;
+  width: 48px;
+  height: 48px;
+  border: 3px solid var(--deep);
+  border-radius: 12px;
+  color: #fff;
+  background: var(--pu);
+  box-shadow: inset 0 3px 0 rgba(255, 255, 255, 0.35), inset 0 -3px 0 rgba(0, 0, 0, 0.18), 0 3px 0 var(--deep);
+}
+.up-badge svg { width: 28px; height: 28px; filter: drop-shadow(0 2px 0 rgba(12, 16, 36, 0.6)); }
+
+.up-text { display: grid; flex: 1; min-width: 0; gap: 3px; }
+.up-name { font: 19px var(--display); letter-spacing: 0.02em; }
+.up-detail { font-size: 13px; color: rgba(255, 255, 255, 0.7); }
+.up-meter { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 10px; margin-top: 2px; }
+.up-pips { display: flex; gap: 4px; }
+.up-pips i {
+  width: 16px;
+  height: 9px;
+  border: 2px solid var(--deep);
+  border-radius: 3px;
+  background: rgba(255, 255, 255, 0.14);
+  transform: skewX(var(--slant));
+}
+.up-pips i.is-on { background: var(--pu); box-shadow: inset 0 2px 0 rgba(255, 255, 255, 0.4); }
+.up-time { display: inline-flex; align-items: center; gap: 4px; font-size: 13px; font-weight: 600; color: rgba(255, 255, 255, 0.75); }
+.up-time svg { width: 12px; height: 12px; color: rgba(255, 255, 255, 0.5); }
+.up-time b { color: var(--gold); }
+
+.btn.up-buy { flex: none; min-width: 108px; min-height: 46px; padding: 6px 14px 9px; font-size: 20px !important; }
+.btn.up-buy svg.coin { width: 22px; height: 22px; }
+.btn.up-buy:disabled {
+  --b1: #6b7290;
+  --b2: #464c69;
+  --b3: #34384f;
+  cursor: not-allowed !important;
+  filter: none;
+  opacity: 0.75;
+}
+.btn.up-buy:disabled:active { transform: skewX(var(--slant)); }
+
+.up-max {
+  --stroke: 3px;
+  flex: none;
+  min-width: 108px;
+  padding: 8px 14px;
+  text-align: center;
+  font: 22px var(--display);
+  letter-spacing: 0.06em;
+  color: var(--gold);
+}
+
+.up-note { margin: 12px 4px 0; text-align: center; font-size: 13px; color: rgba(255, 255, 255, 0.6); }
+
+.panel-body[data-panel="upgrades"] { max-height: min(68vh, 560px); }
+
+/* Narrow phones: the timings already say what a level buys. */
+@media (max-width: 430px) {
+  .up-detail { display: none; }
+  .btn.up-buy, .up-max { min-width: 92px; }
+}

@@ -30,6 +30,22 @@ describe('results flow', () => {
   });
 });
 
+describe('back to the menu', () => {
+  it('puts a run left half-way back to a still, fresh start', () => {
+    const run = new Run(new Streamer());
+    const session = new Session(run, new Progress(memoryStore()), { seed: 7 });
+    session.play();
+    for (let i = 0; i < 300; i++) session.step(SIM.fixedDt);
+    expect(run.state.d).toBeGreaterThan(0);
+    session.toMenu();
+    expect(session.screen).toBe('menu');
+    expect(run.state.phase).toBe('intro');
+    expect(run.state.d).toBe(0);
+    expect(run.state.prev.d).toBe(run.state.d);
+    expect(run.state.player.mode.kind).toBe('run');
+  });
+});
+
 describe('tutorial runs', () => {
   it('lays the lesson track while wantsTutorial says so, and plain runs after', () => {
     const track = new Streamer();
