@@ -1,5 +1,5 @@
 /*
- * Catch the Thief UI: a game's front screen, not a web page. Nothing sits on a paper card: the logo, the counters and the
+ * Catch the Tief UI: a game's front screen, not a web page. Nothing sits on a paper card: the logo, the counters and the
  * buttons float over the scene. Buttons are glossy and slanted with a dark lip under them, lettering is chunky with
  * a dark outline, and readouts sit on dark glass pills so they stay legible over any part of the world.
  */
@@ -174,9 +174,9 @@
   transform: skewX(var(--slant));
   text-shadow: 0 6px 0 var(--deep), 0 12px 18px rgba(0, 0, 0, 0.35);
 }
-/* Two lines: a small white "CATCH THE" over a big gold "THIEF". */
+/* Two lines: a small white "CATCH THE" over a big gold "TIEF". */
 .t-catch { display: block; font-size: 0.5em; color: #fff; -webkit-text-stroke-width: 6px; }
-.t-thief { display: block; color: var(--gold); }
+.t-tief { display: block; color: var(--gold); }
 .logo-tag {
   --stroke: 3px;
   display: inline-block;

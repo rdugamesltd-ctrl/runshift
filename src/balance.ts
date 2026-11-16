@@ -289,13 +289,15 @@ export const SCORE = { perMetre: 1, perGold: 1 } as const;
  * Glide: a jet glide `height` m up (above the trains), climbing at `climbRate` 1/s, over a line of sky coins
  * that starts `coinsFrom` m ahead and switches lane every `coinLaneEvery` m; on landing, `landSafe` s of safety. It
  * lands only when no gap starts within `clearAhead` s of running. The track's own coins under the flight rise into
- * the nearest lane at sky-coin height, closing in at `liftRate` 1/s.
+ * the nearest lane at sky-coin height, closing in at `liftRate` 1/s: those up to the landing, and always those up to
+ * `liftAhead` s of running past the thief (he shows the coins he has passed, so none ahead of a flying player is ever
+ * seen on the floor). On landing, the risen coins still ahead sink back to their spots at the same rate.
  * A power-up spawns on the coin line of roughly one chunk in CHUNK.length / mean(spawnEvery), never before
  * `firstAt` m; `pickRadius` m is the pickup reach and `weights` the odds of each kind.
  */
 export const POWERUPS = { magnet: { base: 8, perLevel: 2, radius: 4.5, ahead: 10 }, shield: { base: 15, perLevel: 3, invulnerable: 1 },
   multiplier: { base: 10, perLevel: 2, factor: 2 },
-  glide: { base: 5, perLevel: 1, height: 5.2, climbRate: 4, coinsFrom: 14, coinLaneEvery: 26, landSafe: 1.2, clearAhead: 1.6, liftRate: 3 },
+  glide: { base: 5, perLevel: 1, height: 5.2, climbRate: 4, coinsFrom: 14, coinLaneEvery: 26, landSafe: 1.2, clearAhead: 1.6, liftRate: 3, liftAhead: 1 },
   spawnEvery: [170, 280], firstAt: 120, pickRadius: 0.95,
   weights: { magnet: 0.3, multiplier: 0.25, shield: 0.25, glide: 0.2 } } as const;
 

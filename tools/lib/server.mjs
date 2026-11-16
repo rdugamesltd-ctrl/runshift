@@ -82,6 +82,6 @@ function urlOf(resolved, http) {
 
 if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {
   const server = await startServer({ dist: process.argv.includes('--dist') });
-  console.log(`Catch the Thief (${server.kind === 'dist' ? 'dist/ build' : 'dev sources, no file watching'}): ${server.url}`);
+  console.log(`Catch the Tief (${server.kind === 'dist' ? 'dist/ build' : 'dev sources, no file watching'}): ${server.url}`);
   console.log('Test URLs: ?debug, ?bot=perfect&seed=7&speed=4 and more (src/debug/hooks.ts). Ctrl+C stops.');
 }

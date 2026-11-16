@@ -12,7 +12,7 @@ const output = path.join(root, 'public', 'assets', 'street-scenery.glb');
 await MeshoptEncoder.ready;
 const io = new NodeIO().registerExtensions([EXTMeshoptCompression]).registerDependencies({ 'meshopt.encoder': MeshoptEncoder });
 const kit = new Document();
-const scene = kit.createScene('Catch the Thief street scenery');
+const scene = kit.createScene('Catch the Tief street scenery');
 for (const { kind, id } of SCENERY_SOURCES) {
   const file = path.join(root, 'asset-sources', 'polypizza', id, 'model.glb');
   if (!existsSync(file)) throw new Error(`Missing ${file}; run node tools/assets/fetch-scenery.mjs`);

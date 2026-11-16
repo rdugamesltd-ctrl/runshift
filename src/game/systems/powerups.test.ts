@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { COINS, PLAYER, POWERUPS, SIM } from '../../balance';
+import { CHUNK, COINS, PLAYER, POWERUPS, SIM } from '../../balance';
 import { Streamer } from '../track/streamer';
 import type { Chunk, GameEvent, PowerUpKind } from '../types';
 import { botAction } from './bot';
@@ -143,7 +143,7 @@ describe('power-ups', () => {
     expect(run.state.player.gliding).toBe(true);
     for (let i = 0; i < 120; i++) run.step(SIM.fixedDt);
     const s = run.state;
-    const end = s.d + s.v * s.powerUps.glide - POWERUPS.glide.coinsFrom;
+    const end = s.d + s.v * s.powerUps.glide;
     const coins: Parameters<typeof layGlideCoins>[0] = [];
     const n = run.track.coinsIn(s.d + 2, end, coins);
     expect(n).toBeGreaterThan(0);
@@ -161,6 +161,42 @@ describe('power-ups', () => {
     const gold = s.gold;
     for (let i = 0; i < 2000 && s.player.gliding; i++) run.step(SIM.fixedDt);
     expect(s.gold).toBeGreaterThan(gold);
+  });
+
+  it('a flying player never sees a coin on the floor, and the risen coins sink back after the landing', () => {
+    const sky = POWERUPS.glide.height + PLAYER.height / 2;
+    for (const seed of [1, 2, 3, 4, 5, 6]) {
+      const startD = 1500;
+      const run = new Run(new Streamer(), { decorators: [chunk => {
+        const at = startD + 8;
+        if (chunk.start <= at && at < chunk.start + chunk.length) chunk.pickups.push({ d: at, x: 0, y: PLAYER.height / 2, kind: 'glide', taken: false });
+      }] });
+      run.reset({ seed, startD });
+      const s = run.state;
+      const coins: Parameters<typeof layGlideCoins>[0] = [];
+      const home = new Map(coins.slice(0, run.track.coinsIn(startD, startD + CHUNK.horizon, coins)).map(c => [c, c.y]));
+      runTo(run, startD + 9);
+      expect(s.player.gliding).toBe(true);
+      let flying = 0;
+      for (let i = 0; i < 2000 && s.player.gliding; i++, flying++) {
+        run.step(SIM.fixedDt);
+        // Once the climb is done, every coin the thief has shown (passed) ahead of the player is up at the sky line.
+        if (flying < 60 || !s.player.gliding) continue;
+        const n = run.track.coinsIn(s.d + 1, s.thief.d, coins);
+        for (let k = 0; k < n; k++) if (!coins[k].taken) expect(coins[k].y).toBeGreaterThan(sky - 0.5);
+      }
+      expect(s.player.gliding).toBe(false);
+      const ahead = coins.slice(0, run.track.coinsIn(s.d + 4, s.d + 40, coins));
+      for (let i = 0; i < 120; i++) run.step(SIM.fixedDt);
+      let checked = 0;
+      for (const coin of ahead) {
+        const y = home.get(coin);
+        if (coin.taken || coin.d < s.d || y === undefined) continue;
+        expect(coin.y).toBeCloseTo(y, 1);
+        checked++;
+      }
+      expect(checked).toBeGreaterThan(0);
+    }
   });
 
   it('sky coins stay in lanes and ahead of the start', () => {

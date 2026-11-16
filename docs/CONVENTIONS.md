@@ -1,6 +1,6 @@
-# Catch the Thief conventions
+# Catch the Tief conventions
 
-How every work package (WP) builds Catch the Thief: ownership, code style, the contracts and the rules they encode.
+How every work package (WP) builds Catch the Tief: ownership, code style, the contracts and the rules they encode.
 Written by WP-00. Sections marked *(from the plan)* are copied verbatim from the approved plan; the rest is
 WP-00's reading of it. Integrators keep this file current.
 

@@ -1,5 +1,5 @@
 {
-  "about": "WP-21: every third-party asset Catch the Thief plans to use, with the KitModel (src/render/types.ts) or role it fills. Read by tools/assets/fetch-polypizza.mjs (downloads the poly.pizza models) and snapshot.mjs (licence evidence), then by WP-22 (build-world), WP-24 (build-characters) and WP-52 (credits). Title, creator and licence were read from the live pages on the date in `checked`; fetch-polypizza.mjs warns when the API or a page says otherwise. `alsoFor` lists further KitModels the same source can fill. Licences and attribution lines live in assets/CREDITS.md; the manual downloads are listed in asset-sources/README.md.",
+  "about": "WP-21: every third-party asset Catch the Tief plans to use, with the KitModel (src/render/types.ts) or role it fills. Read by tools/assets/fetch-polypizza.mjs (downloads the poly.pizza models) and snapshot.mjs (licence evidence), then by WP-22 (build-world), WP-24 (build-characters) and WP-52 (credits). Title, creator and licence were read from the live pages on the date in `checked`; fetch-polypizza.mjs warns when the API or a page says otherwise. `alsoFor` lists further KitModels the same source can fill. Licences and attribution lines live in assets/CREDITS.md; the manual downloads are listed in asset-sources/README.md.",
   "checked": "2026-11-12",
   "priorities": {
     "P0": "needed for M2: a source for every KitModel in the world kit (WP-22 check-kit) and the placeholder characters (WP-24)",
@@ -89,7 +89,7 @@
       "kitModel": "pickup-shield",
       "source": "procedural",
       "title": "Shield bubble",
-      "creator": "Catch the Thief (code)",
+      "creator": "Catch the Tief (code)",
       "licence": "own work",
       "priority": "P0",
       "notes": "No free model fits: a fresnel sphere (WP-33) or the Tripo pickup-shield. Not credited."
@@ -243,7 +243,7 @@
       "kitModel": "wall-pipe",
       "source": "procedural",
       "title": "Wall pipe",
-      "creator": "Catch the Thief (code)",
+      "creator": "Catch the Tief (code)",
       "licence": "own work",
       "priority": "P0",
       "notes": "A thick horizontal pipe is a cylinder: built in the bake (WP-22), or the optional Tripo wall-pipe. Not credited."
@@ -438,7 +438,7 @@
       "creator": "Quaternius",
       "licence": "CC0 1.0",
       "priority": "P2",
-      "notes": "Manual download, optional: 15 models on quaternius.com; 11 of them are on poly.pizza and the ones Catch the Thief needs are fetched from there."
+      "notes": "Manual download, optional: 15 models on quaternius.com; 11 of them are on poly.pizza and the ones Catch the Tief needs are fetched from there."
     },
     {
       "role": "animation-library",
@@ -601,7 +601,7 @@
       "folder": "asset-sources/quaternius/modular-train/",
       "licence": "CC0 1.0",
       "priority": "P2",
-      "download": "quaternius.com: Download. Optional: the models Catch the Thief uses are fetched from poly.pizza.",
+      "download": "quaternius.com: Download. Optional: the models Catch the Tief uses are fetched from poly.pizza.",
       "pages": [
         { "slug": "quaternius-modular-train-site", "url": "https://quaternius.com/packs/modulartrain.html" }
       ]

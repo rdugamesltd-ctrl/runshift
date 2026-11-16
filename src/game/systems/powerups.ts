@@ -47,13 +47,13 @@ function hash01(n: number): number {
 
 /**
  * Lays the jet glide's line of sky coins into `out` (cleared first): from `d` + coinsFrom to the distance the
- * glide covers at speed v, at glide height, switching lane every coinLaneEvery m.
+ * glide covers at speed v (its landing), at glide height, switching lane every coinLaneEvery m.
  */
 export function layGlideCoins(out: Coin[], d: number, v: number, duration: number): void {
   out.length = 0;
   const spec = POWERUPS.glide;
   const y = glideCoinY();
-  const end = d + v * duration - spec.coinsFrom;
+  const end = d + v * duration;
   let lane: Lane = 0;
   let next = d + spec.coinsFrom + spec.coinLaneEvery;
   for (let s = d + spec.coinsFrom; s < end; s += COINS.spacing) {
@@ -82,11 +82,18 @@ export function glideCoinX(coin: Coin): number {
  * coins stay sorted).
  */
 export function liftCoin(coin: Coin, dt: number): void {
-  const x = glideCoinX(coin);
-  const y = glideCoinY();
+  easeCoin(coin, glideCoinX(coin), glideCoinY(), dt);
+}
+
+/**
+ * One step of a coin easing towards (x, y) at POWERUPS.glide.liftRate 1/s, snapping once within a millimetre (d is
+ * left alone). Returns true once it is there.
+ */
+export function easeCoin(coin: Coin, x: number, y: number, dt: number): boolean {
   const u = Math.min(1, POWERUPS.glide.liftRate * dt);
   coin.x = Math.abs(x - coin.x) < 1e-3 ? x : coin.x + (x - coin.x) * u;
   coin.y = Math.abs(y - coin.y) < 1e-3 ? y : coin.y + (y - coin.y) * u;
+  return coin.x === x && coin.y === y;
 }
 
 /**

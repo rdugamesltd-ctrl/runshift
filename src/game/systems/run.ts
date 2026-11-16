@@ -6,7 +6,7 @@ import { createPlayer, endGlide, speedFactor, startGlide, stepGlide, stepPlayer 
 import { createThief, stepThief, thiefLead } from '../entities/thief';
 import { speedAt } from '../track/speed';
 import type { ChunkDecorator, ChunkStreamer, Coin, CollisionBox, GameEvent, Pickup, PowerUpKind, RunState, StreamerOptions } from '../types';
-import { glideCoinX, layGlideCoins, liftCoin, powerUpDuration, pullCoin, tickPowerUps } from './powerups';
+import { easeCoin, glideCoinX, layGlideCoins, liftCoin, powerUpDuration, pullCoin, tickPowerUps } from './powerups';
 import { scoreFor } from './scoring';
 
 /** How a Run is built. */
@@ -59,8 +59,9 @@ export class Run {
   private readonly nearbyBoxes: CollisionBox[] = [];
   private readonly nearbyCoins: Coin[] = [];
   private readonly nearbyPickups: Pickup[] = [];
-  /** Track coins already risen (or rising) to the glide's flight line; cleared when the glide ends. */
-  private readonly lifted = new Set<Coin>();
+  /** Track coins risen (or rising) to the glide's flight line, with their spots on the track; after the glide they
+   * sink back, and each is forgotten once it is home, taken or behind. */
+  private readonly lifted = new Map<Coin, { x: number; y: number }>();
   private upgrades: Record<PowerUpKind, number> = { magnet: 0, shield: 0, multiplier: 0, glide: 0 };
   /** Score earned on top of scoreFor() by the multiplier, unrounded. */
   private bonus = 0;
@@ -128,6 +129,7 @@ export class Run {
     else {
       stepPlayer(p, this.track, s, this.buffer, dt, this.events);
       collide(s, this.track, this.events, this.nearbyBoxes);
+      if (this.lifted.size) this.lowerCoins(dt);
     }
     tickPowerUps(s, dt, this.events);
     if (p.mode.kind !== 'crash' && p.mode.kind !== 'fall') {
@@ -184,6 +186,8 @@ export class Run {
         if (mode === 'run' || mode === 'jump' || mode === 'slide' || mode === 'air') {
           startGlide(p);
           layGlideCoins(s.airCoins, s.d, s.v, duration);
+          // Coins still sinking from an earlier glide rise again: keep the new sky line clear of them.
+          for (const coin of this.lifted.keys()) this.hideSkyCoinsAt(coin);
         } else s.powerUps.glide = 0;
       }
       this.events.push({ type: 'pickup', kind: pickup.kind });
@@ -209,30 +213,44 @@ export class Run {
     }
     endGlide(p, POWERUPS.glide.landSafe);
     s.airCoins.length = 0;
-    this.lifted.clear();
     this.events.push({ type: 'powerUpEnd', kind: 'glide' });
   }
 
   /**
-   * Raises the track's coins to the flight line, from the player to where the sky coins stop (the glide's remaining
-   * distance less coinsFrom, so the coins past the landing stay on the floor). A sky coin that a risen coin would sit
-   * on is put away, so no two coins overlap.
+   * Raises the track's coins to the flight line, from the player to the landing, and always to liftAhead s past the
+   * thief: he shows each coin as he passes it, so a flying player never sees one waiting on the floor (the glide can
+   * also fly on past its timer, over a gap). Those still ahead on landing sink back (lowerCoins). A sky coin that a
+   * risen coin would sit on is put away, so no two coins overlap.
    */
   private liftCoins(dt: number): void {
     const s = this.state;
-    const end = s.d + s.v * s.powerUps.glide - POWERUPS.glide.coinsFrom;
-    const n = end > s.d ? this.track.coinsIn(s.d - COINS.radius, end, this.nearbyCoins) : 0;
+    const spec = POWERUPS.glide;
+    const end = Math.max(s.d + s.v * s.powerUps.glide, s.thief.d + s.v * spec.liftAhead);
+    const n = this.track.coinsIn(s.d - COINS.radius, end, this.nearbyCoins);
     for (let i = 0; i < n; i++) {
       const coin = this.nearbyCoins[i];
       if (coin.taken) continue;
       if (!this.lifted.has(coin)) {
-        this.lifted.add(coin);
-        const x = glideCoinX(coin);
-        for (const sky of s.airCoins) {
-          if (!sky.taken && sky.x === x && Math.abs(sky.d - coin.d) < COINS.spacing * 0.75) sky.taken = true;
-        }
+        this.lifted.set(coin, { x: coin.x, y: coin.y });
+        this.hideSkyCoinsAt(coin);
       }
       liftCoin(coin, dt);
+    }
+  }
+
+  /** Puts away the sky coins a risen track coin would sit on. */
+  private hideSkyCoinsAt(coin: Coin): void {
+    const x = glideCoinX(coin);
+    for (const sky of this.state.airCoins) {
+      if (!sky.taken && sky.x === x && Math.abs(sky.d - coin.d) < COINS.spacing * 0.75) sky.taken = true;
+    }
+  }
+
+  /** After the glide, eases the risen coins still ahead back down to their spots on the track. */
+  private lowerCoins(dt: number): void {
+    const s = this.state;
+    for (const [coin, home] of this.lifted) {
+      if (coin.taken || coin.d < s.d - COINS.radius || easeCoin(coin, home.x, home.y, dt)) this.lifted.delete(coin);
     }
   }
 

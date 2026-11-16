@@ -1,6 +1,6 @@
 # CLAUDE.md
 
-Catch the Thief: a browser endless runner (formerly RUNSHIFT; code identifiers such as `window.__runshift`, the `runshift-save` key and the `runshift:*` perf marks keep the old name) built with Three.js r187, TypeScript 7 and Vite 8, for phones (touch, portrait and
+Catch the Tief: a browser endless runner (formerly RUNSHIFT; code identifiers such as `window.__runshift`, the `runshift-save` key and the `runshift:*` perf marks keep the old name) built with Three.js r187, TypeScript 7 and Vite 8, for phones (touch, portrait and
 landscape) and desktops (keyboard). An original cartoon police officer (a Tripo model, `public/assets/characters/cop.glb`) chases a masked thief who stole gold down three
 lanes (Subway Surfers style: swipe to change lane, jump and slide), and runs on the side walls where the floor is
 missing. A run is seen in first person: the hero's own arms and legs are drawn over the world

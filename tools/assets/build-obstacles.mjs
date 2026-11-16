@@ -12,7 +12,7 @@ const output = path.join(root, 'public', 'assets', 'obstacles.glb');
 await MeshoptEncoder.ready;
 const io = new NodeIO().registerExtensions([EXTMeshoptCompression]).registerDependencies({ 'meshopt.encoder': MeshoptEncoder });
 const kit = new Document();
-const scene = kit.createScene('Catch the Thief obstacles');
+const scene = kit.createScene('Catch the Tief obstacles');
 for (const { kind, id } of OBSTACLE_SOURCES) {
   const file = path.join(root, 'asset-sources', 'polypizza', id, 'model.glb');
   if (!existsSync(file)) throw new Error(`Missing ${file}; run node tools/assets/fetch-obstacles.mjs`);

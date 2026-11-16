@@ -1,4 +1,4 @@
-# Source archives for Catch the Thief
+# Source archives for Catch the Tief
 
 ## Downtown City MegaKit (required for M2)
 
