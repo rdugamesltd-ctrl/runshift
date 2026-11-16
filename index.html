@@ -78,6 +78,10 @@
       #boot i::after { content: ''; position: absolute; top: 0; bottom: 0; width: 40%; border-radius: 2px; background: #ffbf2a; animation: boot 1.1s cubic-bezier(.77, 0, .175, 1) infinite; }
       #boot span { font-size: 10px; color: #8d93b8; margin-right: -.3em; }
       #boot.failed i, #boot.failed span { display: none; }
+      #boot.tap { cursor: pointer; }
+      #boot.tap i { display: none; }
+      #boot.tap span { font-size: 14px; color: #fff4dd; animation: tap .9s ease-in-out infinite alternate; }
+      @keyframes tap { from { opacity: .4; } to { opacity: 1; } }
       #boot p { max-width: 86vw; margin-bottom: 0; font-size: 11px; line-height: 1.7; letter-spacing: .08em; text-align: center; color: #ff8f7a; }
       #boot p small { display: block; font-size: 10px; color: #8d93b8; }
       @keyframes boot { from { left: -40%; } to { left: 100%; } }

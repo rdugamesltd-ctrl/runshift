@@ -66,6 +66,18 @@ function debugState(run: RunState): DebugState {
 /**
  * Builds the game, shows its menu, and connects the run, input, pause flow, UI and renderer.
  */
+/**
+ * True when the browser says it would start an AudioContext now: Firefox answers getAutoplayPolicy, and any
+ * browser allows it once the page has had a gesture.
+ */
+function soundAllowed(): boolean {
+  const nav = navigator as Navigator & {
+    getAutoplayPolicy?: (type: 'audiocontext') => string;
+    userActivation?: { readonly hasBeenActive: boolean };
+  };
+  return nav.getAutoplayPolicy?.('audiocontext') === 'allowed' || nav.userActivation?.hasBeenActive === true;
+}
+
 export async function startApp(): Promise<void> {
   const params = parseParams(location.search);
   const canvas = document.querySelector<HTMLCanvasElement>('#game');
@@ -95,6 +107,9 @@ export async function startApp(): Promise<void> {
   input.onFirstGesture = () => audio.start();
   input.onGesture = () => audio.resume();
   installUnlock(input);
+  // Where the browser already allows sound (a portal whose own play button was the gesture, an earlier gesture on
+  // this page), the menu music starts now. Elsewhere this would only print a warning: the first gesture starts it.
+  if (platform.name !== 'local' || soundAllowed()) audio.start();
   document.addEventListener('visibilitychange', () => audio.setHidden(document.hidden));
 
   const hud = new Hud(hudRoot);
@@ -302,7 +317,8 @@ export async function startApp(): Promise<void> {
       }
       if (!hooks.ready) {
         hooks.ready = true;
-        bootDone();
+        // Locally, sound still blocked: ask for a tap so the menu music plays. Not under automation (the tools).
+        bootDone(platform.name === 'local' && audio.state !== 'running' && !navigator.webdriver);
         platform.loadingStop();
       }
     },

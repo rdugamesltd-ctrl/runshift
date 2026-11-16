@@ -86,7 +86,9 @@ never rebased; something at distance s renders at z = −(s − dRender).
   never shipped. Every third-party asset needs a row in `assets/CREDITS.md`; CC-BY assets also need the in-game
   credits screen.
 - Music: `public/assets/music/` (`main-menu.mp3` on the menu and results, `highway-jumpers.mp3` during a run), streamed
-  by `GameAudio.setMusic` (`src/audio/audio.ts`); file names and levels are in `src/audio/sfx.ts`.
+  by `GameAudio.setMusic` (`src/audio/audio.ts`); file names and levels are in `src/audio/sfx.ts`. Browsers block
+  sound until a gesture, so the local build ends its boot screen with "tap to start" (`bootDone` in
+  `src/app/boot.ts`); portals and automated browsers (`navigator.webdriver`) skip it.
 - The user generates the hero, the thief and a few props in Tripo (paid plan): `docs/TRIPO-ASSETS.md`.
 
 ## Docs
